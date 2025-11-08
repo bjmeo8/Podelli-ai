@@ -83,6 +83,121 @@
     .gradient-overlay-bottom {
       background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
     }
+
+    /* Animations personnalisées pour les actions */
+    @keyframes pulse-ring {
+      0% {
+        width: 140px;
+        height: 140px;
+        opacity: 1;
+        border-width: 3px;
+      }
+      50% {
+        opacity: 0.6;
+      }
+      100% {
+        width: 280px;
+        height: 280px;
+        opacity: 0;
+        border-width: 1px;
+      }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      50% { transform: translateX(8px); }
+      75% { transform: translateX(-8px); }
+    }
+
+    @keyframes scale-in {
+      0% {
+        transform: scale(0.9);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* Options de quiz */
+    .quiz-option.selected {
+      border-color: hsl(164, 86%, 45%);
+      background: rgba(28, 183, 154, 0.08);
+      transform: scale(1.02);
+      box-shadow: 0 6px 20px rgba(28, 183, 154, 0.25);
+    }
+
+    .quiz-option.correct {
+      border-color: #22C55E;
+      background: rgba(34, 197, 94, 0.12);
+    }
+
+    .quiz-option.incorrect {
+      border-color: #EF4444;
+      background: rgba(239, 68, 68, 0.12);
+      animation: shake 0.4s ease-in-out;
+    }
+
+    .quiz-option-img.selected {
+      border-color: hsl(164, 86%, 45%);
+      background: rgba(28, 183, 154, 0.08);
+      transform: scale(1.02);
+      box-shadow: 0 6px 20px rgba(28, 183, 154, 0.25);
+    }
+
+    .quiz-option-img.correct {
+      border-color: #22C55E;
+      background: rgba(34, 197, 94, 0.12);
+    }
+
+    .quiz-option-img.incorrect {
+      border-color: #EF4444;
+      background: rgba(239, 68, 68, 0.12);
+      animation: shake 0.4s ease-in-out;
+    }
+
+    /* Enregistrement audio */
+    .recording .sound-ring {
+      animation: pulse-ring 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      opacity: 1;
+    }
+
+    .recording .sound-ring:nth-child(2) {
+      animation-delay: 0.4s;
+    }
+
+    .recording .sound-ring:nth-child(3) {
+      animation-delay: 0.8s;
+    }
+
+    .recording {
+      background: rgba(239, 68, 68, 0.95) !important;
+      border-color: #EF4444 !important;
+    }
+
+    .recording svg {
+      color: white !important;
+    }
+
+    .animate-scale-in {
+      animation: scale-in 0.5s ease-out;
+    }
+
+    /* Z-index layers */
+    .z-15 { z-index: 15; }
+    .z-100 { z-index: 100; }
+    .z-101 { z-index: 101; }
+    .z-102 { z-index: 102; }
+
+    /* Ajustements pour Tailwind */
+    .border-3 { border-width: 3px; }
+    .h-13 { height: 52px; }
+    .py-4\.5 { padding-top: 18px; padding-bottom: 18px; }
+    .gap-3\.5 { gap: 14px; }
+    .hover\:scale-108:hover { transform: scale(1.08); }
+    .shadow-3xl { box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35); }
   </style>
 </head>
 
@@ -106,323 +221,317 @@
 
   <!-- Video Feed (Plein écran, défile derrière le header/footer) -->
   <div class="feed-container max-w-lg mx-auto">
-    <!-- Video 1: French - Beginner -->
+
+    <!-- ===== ACTION 1: VIDEO QUIZ ===== -->
     <div class="video-card bg-gradient-to-br from-blue-600 to-blue-400">
-      <!-- Video placeholder with play button -->
-      <div class="absolute inset-0 flex items-center justify-center">
-        <button class="w-20 h-20 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center hover:bg-white/40 transition-all">
-          <svg class="h-10 w-10 text-white ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        </button>
-      </div>
-
-      <!-- Top gradient (MODIFICATION: padding-top pour éviter le header) -->
-      <div class="absolute top-0 left-0 right-0 gradient-overlay-top px-6 pt-[calc(73px+1rem)] pb-6">
-        <div class="flex items-center justify-between">
-          <span class="px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold text-white">🇫🇷 French</span>
-          <span class="px-3 py-1.5 bg-accent/80 backdrop-blur-sm rounded-full text-xs font-bold text-white">BEGINNER</span>
+      <!-- Video background (placeholder avec image statique) -->
+      <div class="absolute inset-0 bg-cover bg-center" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800');">
+        <!-- Icône play centrale (avant démarrage) -->
+        <div id="playIcon" class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0">
+          <div class="w-20 h-20 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center border-3 border-white">
+            <svg class="h-10 w-10 text-white ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
         </div>
       </div>
 
-      <!-- Bottom gradient (MODIFICATION: padding-bottom pour éviter le footer) -->
-      <div class="absolute bottom-0 left-0 right-0 gradient-overlay-bottom px-6 pb-[calc(66px+1rem)] pt-6">
-        <div class="flex items-end gap-4">
-          <!-- Left: Content info -->
-          <div class="flex-1 space-y-3">
-            <div>
-              <h3 class="text-2xl font-bold mb-1 text-white">Greetings & Introductions</h3>
-              <p class="text-sm text-white/80">Learn how to greet people and introduce yourself in French</p>
-            </div>
-            <div class="flex items-center gap-4 text-sm text-white/70">
-              <div class="flex items-center gap-1">
-                <svg class="h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                <span class="text-white">3:24</span>
-              </div>
-              <div class="flex items-center gap-1">
-                <svg class="h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                <span class="text-white">12.5K views</span>
-              </div>
-            </div>
-            <!-- Bloc formateur (avatar et nom) retiré -->
+      <!-- Header Overlay -->
+      <div class="absolute top-0 left-0 right-0 gradient-overlay-top px-6 pt-[calc(73px+1rem)] pb-6 z-10">
+        <div class="flex items-center justify-between">
+          <span class="px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold text-white">Mission 1</span>
+          <span class="px-3 py-1.5 bg-accent/80 backdrop-blur-sm rounded-full text-xs font-bold text-white">VIDEO QUIZ</span>
+        </div>
+      </div>
+
+      <!-- Indicateur "Tap pour révéler" -->
+      <div class="absolute bottom-[180px] left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
+        <div class="px-4 py-2 bg-white/90 backdrop-blur rounded-full text-xs font-semibold text-gray-800 flex items-center gap-2">
+          <span>↑</span>
+          <span>Question</span>
+        </div>
+      </div>
+
+      <!-- Footer Overlay -->
+      <div class="absolute bottom-0 left-0 right-0 gradient-overlay-bottom px-6 pb-[calc(66px+1rem)] pt-6 z-10">
+        <div>
+          <h3 class="text-2xl font-bold mb-2 text-white">Épisode 1 - Contrôle des passeports</h3>
+          <p class="text-sm text-white/80 leading-relaxed">Apprendre à se présenter et à répondre aux questions de la douane</p>
+        </div>
+      </div>
+
+      <!-- Questions Overlay (apparaît à la fin de la vidéo) -->
+      <div id="questionsOverlay" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-15 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="absolute bottom-[160px] left-1/2 transform -translate-x-1/2 w-[calc(100%-48px)] max-w-[400px] bg-white/95 backdrop-blur-lg rounded-3xl p-6 shadow-2xl border border-white/20">
+          <!-- Question -->
+          <h4 class="text-lg font-bold text-gray-800 text-center mb-5">Que dit l'agent ?</h4>
+
+          <!-- Options -->
+          <div class="flex flex-col gap-3">
+            <button class="quiz-option group bg-white border-2 border-gray-200 rounded-2xl p-4 text-left transition-all duration-200 hover:border-accent hover:-translate-y-0.5 hover:shadow-lg">
+              <span class="text-base font-medium text-gray-800">A) Bonjour monsieur, votre passeport s'il vous plaît.</span>
+            </button>
+
+            <button class="quiz-option group bg-white border-2 border-gray-200 rounded-2xl p-4 text-left transition-all duration-200 hover:border-accent hover:-translate-y-0.5 hover:shadow-lg">
+              <span class="text-base font-medium text-gray-800">B) Où allez-vous ?</span>
+            </button>
+
+            <button class="quiz-option group bg-white border-2 border-gray-200 rounded-2xl p-4 text-left transition-all duration-200 hover:border-accent hover:-translate-y-0.5 hover:shadow-lg">
+              <span class="text-base font-medium text-gray-800">C) Vous aimez Paris ?</span>
+            </button>
           </div>
 
-          <!-- Right: Action buttons (MODIFICATION: gap-5, pb-4 retiré car géré par parent) -->
-          <div class="flex flex-col gap-5 items-center">
-            <button class="flex flex-col items-center gap-1 hover:scale-110 transition-transform">
-              <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-              </div>
-              <span class="text-xs font-semibold text-white">1.2K</span>
-            </button>
+          <!-- Bouton Valider -->
+          <button id="validateBtn" class="w-full h-13 bg-gray-300 rounded-full text-white font-bold text-base mt-5 transition-all duration-300 opacity-50 cursor-not-allowed" disabled>
+            Valider
+          </button>
+        </div>
+      </div>
+    </div>
 
-            <button class="flex flex-col items-center gap-1 hover:scale-110 transition-transform">
-              <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-              </div>
-              <span class="text-xs font-semibold text-white">89</span>
-            </button>
+    <!-- ===== ACTION 2: VOICE SPELL ===== -->
+    <div class="video-card bg-gradient-to-br from-blue-600 to-blue-400">
+      <!-- Background avec image statique -->
+      <div class="absolute inset-0 bg-cover bg-center brightness-75" style="background-image: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.4) 100%), url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800');">
+      </div>
 
-            <button class="flex flex-col items-center gap-1 hover:scale-110 transition-transform">
-              <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m17 3-5 5-5-5-7 7v11a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V10z"/></svg>
-              </div>
-              <span class="text-xs font-semibold text-white">Share</span>
-            </button>
+      <!-- Header Overlay -->
+      <div class="absolute top-0 left-0 right-0 gradient-overlay-top px-6 pt-[calc(73px+1rem)] pb-6 z-10">
+        <div class="flex items-center justify-between">
+          <span class="px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold text-white">Mission 1</span>
+          <span class="px-3 py-1.5 bg-accent/80 backdrop-blur-sm rounded-full text-xs font-bold text-white">VOICE SPELL</span>
+        </div>
+      </div>
 
-            <button class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform">
-              <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+      <!-- Bouton Replay (haut droit) -->
+      <button class="absolute top-[110px] right-6 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/50 flex items-center justify-center z-30 hover:bg-white/30 transition-all hover:rotate-180 hover:scale-110">
+        <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+      </button>
+
+      <!-- Caption synchronisée (milieu de l'écran) -->
+      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[calc(100%-64px)] max-w-[450px] z-20">
+        <div class="px-6 py-4 bg-black/85 backdrop-blur-md rounded-xl">
+          <p class="text-xl font-bold text-white text-center leading-relaxed tracking-wide" style="text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
+            Bonjour monsieur, votre passeport s'il vous plaît.
+          </p>
+        </div>
+      </div>
+
+      <!-- Blocs phonétiques (après le milieu) -->
+      <div class="absolute top-[55%] left-0 right-0 px-6 z-20">
+        <div class="flex flex-wrap justify-center gap-3">
+          <!-- Bloc 1 -->
+          <div class="inline-flex flex-col bg-white/95 backdrop-blur-md border-2 border-white/50 rounded-2xl px-5 py-4 shadow-lg">
+            <span class="text-lg font-bold text-gray-800 text-center mb-2 tracking-wide">Bonjour</span>
+            <div class="h-0.5 bg-gradient-to-r from-transparent via-accent/50 to-transparent my-2"></div>
+            <span class="text-base text-accent text-center font-mono italic tracking-wider">/bohn-zhoor/</span>
+          </div>
+
+          <!-- Bloc 2 -->
+          <div class="inline-flex flex-col bg-white/95 backdrop-blur-md border-2 border-white/50 rounded-2xl px-5 py-4 shadow-lg">
+            <span class="text-lg font-bold text-gray-800 text-center mb-2 tracking-wide">monsieur</span>
+            <div class="h-0.5 bg-gradient-to-r from-transparent via-accent/50 to-transparent my-2"></div>
+            <span class="text-base text-accent text-center font-mono italic tracking-wider">/muh-syuh/</span>
+          </div>
+
+          <!-- Bloc 3 -->
+          <div class="inline-flex flex-col bg-white/95 backdrop-blur-md border-2 border-white/50 rounded-2xl px-5 py-4 shadow-lg">
+            <span class="text-lg font-bold text-gray-800 text-center mb-2 tracking-wide">votre passeport</span>
+            <div class="h-0.5 bg-gradient-to-r from-transparent via-accent/50 to-transparent my-2"></div>
+            <span class="text-base text-accent text-center font-mono italic tracking-wider">/vo-truh pahs-por/</span>
+          </div>
+
+          <!-- Bloc 4 -->
+          <div class="inline-flex flex-col bg-white/95 backdrop-blur-md border-2 border-white/50 rounded-2xl px-5 py-4 shadow-lg">
+            <span class="text-lg font-bold text-gray-800 text-center mb-2 tracking-wide">s'il vous plaît</span>
+            <div class="h-0.5 bg-gradient-to-r from-transparent via-accent/50 to-transparent my-2"></div>
+            <span class="text-base text-accent text-center font-mono italic tracking-wider">/seel voo pleh/</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Overlay -->
+      <div class="absolute bottom-0 left-0 right-0 gradient-overlay-bottom px-6 pb-[calc(66px+1rem)] pt-6 z-10">
+        <div>
+          <h3 class="text-2xl font-bold mb-2 text-white">Épisode 1 - Contrôle des passeports</h3>
+          <p class="text-sm text-white/80 leading-relaxed">Maîtriser la prononciation correcte</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ACTION 3: QUIZ (Image) ===== -->
+    <div class="video-card bg-gradient-to-br from-blue-500 to-blue-400">
+
+      <!-- Header Overlay -->
+      <div class="absolute top-0 left-0 right-0 gradient-overlay-top px-6 pt-[calc(73px+1rem)] pb-6 z-10">
+        <div class="flex items-center justify-between">
+          <span class="px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold text-white">Mission 1</span>
+          <span class="px-3 py-1.5 bg-accent/80 backdrop-blur-sm rounded-full text-xs font-bold text-white">QUIZ</span>
+        </div>
+      </div>
+
+      <!-- Image centrale -->
+      <div class="absolute top-[100px] left-1/2 transform -translate-x-1/2 w-[calc(100%-64px)] max-w-[320px] aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl bg-white border-4 border-white animate-scale-in">
+        <img src="https://images.unsplash.com/photo-1578174959098-c36547a588ea?w=400" alt="Passport" class="w-full h-full object-cover">
+      </div>
+
+      <!-- Question -->
+      <div class="absolute top-[420px] left-0 right-0 px-8 text-center z-10">
+        <h3 class="text-xl font-bold text-white mb-7" style="text-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+          Associe le mot "passeport" à l'image correcte
+        </h3>
+      </div>
+
+      <!-- Options de réponse -->
+      <div class="absolute top-[480px] left-0 right-0 px-6 flex flex-col gap-3.5 z-10">
+        <button class="quiz-option-img bg-white/98 border-3 border-transparent rounded-2xl px-5 py-4.5 flex items-center gap-3.5 shadow-lg transition-all duration-250 hover:-translate-y-1 hover:shadow-xl hover:border-accent/30">
+          <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center font-bold text-lg text-gray-800 flex-shrink-0">A</div>
+          <span class="text-base font-medium text-gray-800 flex-1">🛂 Passeport (Document de voyage)</span>
+        </button>
+
+        <button class="quiz-option-img bg-white/98 border-3 border-transparent rounded-2xl px-5 py-4.5 flex items-center gap-3.5 shadow-lg transition-all duration-250 hover:-translate-y-1 hover:shadow-xl hover:border-accent/30">
+          <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center font-bold text-lg text-gray-800 flex-shrink-0">B</div>
+          <span class="text-base font-medium text-gray-800 flex-1">🎫 Billet d'avion</span>
+        </button>
+
+        <button class="quiz-option-img bg-white/98 border-3 border-transparent rounded-2xl px-5 py-4.5 flex items-center gap-3.5 shadow-lg transition-all duration-250 hover:-translate-y-1 hover:shadow-xl hover:border-accent/30">
+          <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center font-bold text-lg text-gray-800 flex-shrink-0">C</div>
+          <span class="text-base font-medium text-gray-800 flex-1">💼 Valise</span>
+        </button>
+      </div>
+
+      <!-- Bouton Valider -->
+      <div class="absolute bottom-[calc(66px+2rem)] left-1/2 transform -translate-x-1/2 w-[calc(100%-80px)] max-w-[280px] z-10">
+        <button class="w-full h-13 bg-gray-400 rounded-full text-white font-bold text-base shadow-lg transition-all duration-300 opacity-60 cursor-not-allowed" disabled>
+          Valider
+        </button>
+      </div>
+
+      <!-- Footer Overlay -->
+      <div class="absolute bottom-0 left-0 right-0 gradient-overlay-bottom px-6 pb-[calc(66px+1rem)] pt-6 z-10">
+        <div>
+          <h3 class="text-2xl font-bold mb-2 text-white">Épisode 1 - Contrôle des passeports</h3>
+          <p class="text-sm text-white/80 leading-relaxed">Testez votre compréhension</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== ACTION 4: SPEAKING TASK ===== -->
+    <div class="video-card bg-gradient-to-br from-blue-600 to-blue-400">
+
+      <!-- Header Overlay -->
+      <div class="absolute top-0 left-0 right-0 gradient-overlay-top px-6 pt-[calc(73px+1rem)] pb-6 z-10">
+        <div class="flex items-center justify-between">
+          <span class="px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold text-white">Mission 1</span>
+          <span class="px-3 py-1.5 bg-accent/80 backdrop-blur-sm rounded-full text-xs font-bold text-white">SPEAKING</span>
+        </div>
+      </div>
+
+      <!-- Bouton "Écouter l'exemple" -->
+      <button class="absolute top-[100px] left-1/2 transform -translate-x-1/2 flex items-center gap-3 px-7 py-3.5 bg-white/95 backdrop-blur-md border-2 border-white/60 rounded-full shadow-xl transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 hover:shadow-2xl hover:bg-white hover:border-accent z-30">
+        <svg class="h-6 w-6 text-accent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+        <span class="text-base font-semibold text-gray-800 whitespace-nowrap">Écouter l'exemple</span>
+      </button>
+
+      <!-- Instruction -->
+      <div class="absolute top-[190px] left-0 right-0 px-8 text-center z-10">
+        <p class="text-base font-semibold text-white/90 mb-4 uppercase tracking-wide">Répétez la phrase :</p>
+        <div class="inline-block px-8 py-5 bg-black/25 backdrop-blur-sm rounded-2xl border-2 border-white/20">
+          <p class="text-3xl font-bold text-white leading-snug tracking-wide" style="text-shadow: 0 3px 12px rgba(0,0,0,0.4);">
+            Bonjour monsieur, votre passeport s'il vous plaît
+          </p>
+        </div>
+      </div>
+
+      <!-- Bouton Microphone principal -->
+      <div class="absolute top-[420px] left-1/2 transform -translate-x-1/2 flex flex-col items-center z-20">
+        <button id="micBtn" class="relative w-[140px] h-[140px] rounded-full bg-white/98 border-4 border-white shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-108 hover:shadow-3xl">
+          <svg class="h-[60px] w-[60px] text-accent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+
+          <!-- Ondes sonores (animation lors de l'enregistrement) -->
+          <div class="sound-ring absolute inset-0 rounded-full border-3 border-red-500/50 opacity-0 pointer-events-none"></div>
+          <div class="sound-ring absolute inset-0 rounded-full border-3 border-red-500/50 opacity-0 pointer-events-none"></div>
+          <div class="sound-ring absolute inset-0 rounded-full border-3 border-red-500/50 opacity-0 pointer-events-none"></div>
+        </button>
+
+        <!-- Label sous le micro -->
+        <p class="mt-6 text-sm font-medium text-white/80">Appuyez pour parler</p>
+
+        <!-- Timer (caché par défaut, apparaît en enregistrement) -->
+        <div id="recordTimer" class="hidden mt-5 text-4xl font-bold text-white font-mono tracking-wider" style="text-shadow: 0 2px 12px rgba(0,0,0,0.5);">
+          00:00
+        </div>
+        <p id="recordingLabel" class="hidden mt-2 text-sm font-medium text-white/80">Enregistrement en cours...</p>
+      </div>
+
+      <!-- Footer Overlay -->
+      <div class="absolute bottom-0 left-0 right-0 gradient-overlay-bottom px-6 pb-[calc(66px+1rem)] pt-6 z-10">
+        <div>
+          <h3 class="text-2xl font-bold mb-2 text-white">Épisode 1 - Contrôle des passeports</h3>
+          <p class="text-sm text-white/80 leading-relaxed">Pratiquez votre prononciation</p>
+        </div>
+      </div>
+
+      <!-- Modal de résultat (caché par défaut) -->
+      <div id="resultModal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-xl z-100 flex items-center justify-center">
+        <div class="w-[calc(100%-48px)] max-w-[420px] bg-white rounded-3xl p-9 shadow-3xl transform scale-0 transition-transform duration-500">
+          <h2 class="text-3xl font-bold text-green-500 text-center mb-7 flex items-center justify-center gap-3">
+            Excellent ! <span class="text-3xl">🎉</span>
+          </h2>
+
+          <!-- Métriques -->
+          <div class="space-y-4 mb-7">
+            <div>
+              <div class="flex justify-between mb-2">
+                <span class="text-sm font-medium text-gray-700">Prononciation</span>
+                <span class="text-sm font-bold text-gray-800">92%</span>
+              </div>
+              <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div class="h-full bg-green-500 rounded-full" style="width: 92%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-2">
+                <span class="text-sm font-medium text-gray-700">Rythme</span>
+                <span class="text-sm font-bold text-gray-800">88%</span>
+              </div>
+              <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div class="h-full bg-green-500 rounded-full" style="width: 88%"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-2">
+                <span class="text-sm font-medium text-gray-700">Intonation</span>
+                <span class="text-sm font-bold text-gray-800">85%</span>
+              </div>
+              <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div class="h-full bg-green-500 rounded-full" style="width: 85%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Points à améliorer -->
+          <div class="bg-blue-50 rounded-2xl p-4 mb-7">
+            <p class="text-sm font-semibold text-gray-700 mb-2">💡 Points à améliorer :</p>
+            <ul class="text-sm text-gray-600 space-y-1">
+              <li>• Intonation sur "monsieur"</li>
+              <li>• Liaison "votre" + "passeport"</li>
+            </ul>
+          </div>
+
+          <!-- Boutons d'action -->
+          <div class="flex gap-3.5">
+            <button class="flex-1 h-13 bg-transparent border-2 border-gray-200 rounded-2xl text-base font-semibold text-gray-600 hover:bg-gray-50 transition-all">
+              Réessayer
+            </button>
+            <button class="flex-1 h-13 bg-accent rounded-2xl text-base font-bold text-white shadow-lg hover:scale-105 transition-all">
+              Continuer ✓
             </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Video 2: Spanish - Intermediate -->
-    <div class="video-card bg-gradient-to-br from-orange-500 to-yellow-400">
-      <div class="absolute inset-0 flex items-center justify-center">
-        <button class="w-20 h-20 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center hover:bg-white/40 transition-all">
-          <svg class="h-10 w-10 text-white ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        </button>
-      </div>
-
-      <div class="absolute top-0 left-0 right-0 gradient-overlay-top px-6 pt-[calc(73px+1rem)] pb-6">
-        <div class="flex items-center justify-between">
-          <span class="px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold text-white">🇪🇸 Spanish</span>
-          <span class="px-3 py-1.5 bg-purple-500/80 backdrop-blur-sm rounded-full text-xs font-bold text-white">INTERMEDIATE</span>
-        </div>
-      </div>
-
-      <div class="absolute bottom-0 left-0 right-0 gradient-overlay-bottom px-6 pb-[calc(66px+1rem)] pt-6">
-        <div class="flex items-end gap-4">
-          <div class="flex-1 space-y-3">
-            <div>
-              <h3 class="text-2xl font-bold mb-1 text-white">Daily Conversations</h3>
-              <p class="text-sm text-white/80">Master everyday Spanish conversations at a restaurant</p>
-            </div>
-            <div class="flex items-center gap-4 text-sm text-white/70">
-              <div class="flex items-center gap-1">
-                <svg class="h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                <span class="text-white">5:12</span>
-              </div>
-              <div class="flex items-center gap-1">
-                <svg class="h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                <span class="text-white">24.8K views</span>
-              </div>
-            </div>
-            <!-- Bloc formateur (avatar et nom) retiré -->
-          </div>
-
-          <div class="flex flex-col gap-5 items-center">
-            <button class="flex flex-col items-center gap-1 hover:scale-110 transition-transform">
-              <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-              </div>
-              <span class="text-xs font-semibold">3.4K</span>
-            </button>
-            <button class="flex flex-col items-center gap-1 hover:scale-110 transition-transform">
-              <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-              </div>
-              <span class="text-xs font-semibold">156</span>
-            </button>
-            <button class="flex flex-col items-center gap-1 hover:scale-110 transition-transform">
-              <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m17 3-5 5-5-5-7 7v11a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V10z"/></svg>
-              </div>
-              <span class="text-xs font-semibold">Share</span>
-            </button>
-            <button class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform">
-              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Video 3: Japanese - Advanced -->
-    <div class="video-card bg-gradient-to-br from-pink-500 to-rose-400">
-      <div class="absolute inset-0 flex items-center justify-center">
-        <button class="w-20 h-20 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center hover:bg-white/40 transition-all">
-          <svg class="h-10 w-10 text-white ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        </button>
-      </div>
-
-      <div class="absolute top-0 left-0 right-0 gradient-overlay-top px-6 pt-[calc(73px+1rem)] pb-6">
-        <div class="flex items-center justify-between">
-          <span class="px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold text-white">🇯🇵 Japanese</span>
-          <span class="px-3 py-1.5 bg-red-500/80 backdrop-blur-sm rounded-full text-xs font-bold text-white">ADVANCED</span>
-        </div>
-      </div>
-
-      <div class="absolute bottom-0 left-0 right-0 gradient-overlay-bottom px-6 pb-[calc(66px+1rem)] pt-6">
-        <div class="flex items-end gap-4">
-          <div class="flex-1 space-y-3">
-            <div>
-              <h3 class="text-2xl font-bold mb-1 text-white">Business Japanese</h3>
-              <p class="text-sm text-white/80">Professional keigo expressions for workplace communication</p>
-            </div>
-            <div class="flex items-center gap-4 text-sm text-white/70">
-              <div class="flex items-center gap-1">
-                <svg class="h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                <span class="text-white">8:45</span>
-              </div>
-              <div class="flex items-center gap-1">
-                <svg class="h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                <span class="text-white">45.2K views</span>
-              </div>
-            </div>
-            <!-- Bloc formateur (avatar et nom) retiré -->
-          </div>
-
-          <div class="flex flex-col gap-5 items-center">
-            <button class="flex flex-col items-center gap-1 hover:scale-110 transition-transform">
-              <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-              </div>
-              <span class="text-xs font-semibold">5.8K</span>
-            </button>
-            <button class="flex flex-col items-center gap-1 hover:scale-110 transition-transform">
-              <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-              </div>
-              <span class="text-xs font-semibold">234</span>
-            </button>
-            <button class="flex flex-col items-center gap-1 hover:scale-110 transition-transform">
-              <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m17 3-5 5-5-5-7 7v11a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V10z"/></svg>
-              </div>
-              <span class="text-xs font-semibold">Share</span>
-            </button>
-            <button class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform">
-              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Video 4: German - Beginner -->
-    <div class="video-card bg-gradient-to-br from-emerald-500 to-teal-400">
-      <div class="absolute inset-0 flex items-center justify-center">
-        <button class="w-20 h-20 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center hover:bg-white/40 transition-all">
-          <svg class="h-10 w-10 text-white ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        </button>
-      </div>
-
-      <div class="absolute top-0 left-0 right-0 gradient-overlay-top px-6 pt-[calc(73px+1rem)] pb-6">
-        <div class="flex items-center justify-between">
-          <span class="px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold text-white">🇩🇪 German</span>
-          <span class="px-3 py-1.5 bg-accent/80 backdrop-blur-sm rounded-full text-xs font-bold text-white">BEGINNER</span>
-        </div>
-      </div>
-
-      <div class="absolute bottom-0 left-0 right-0 gradient-overlay-bottom px-6 pb-[calc(66px+1rem)] pt-6">
-        <div class="flex items-end gap-4">
-          <div class="flex-1 space-y-3">
-            <div>
-              <h3 class="text-2xl font-bold mb-1 text-white">German Alphabet & Sounds</h3>
-              <p class="text-sm text-white/80">Perfect pronunciation of German letters and unique sounds</p>
-            </div>
-            <div class="flex items-center gap-4 text-sm text-white/70">
-              <div class="flex items-center gap-1">
-                <svg class="h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                <span class="text-white">4:18</span>
-              </div>
-              <div class="flex items-center gap-1">
-                <svg class="h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                <span class="text-white">18.3K views</span>
-              </div>
-            </div>
-            <!-- Bloc formateur (avatar et nom) retiré -->
-          </div>
-
-          <div class="flex flex-col gap-5 items-center">
-            <button class="flex flex-col items-center gap-1 hover:scale-110 transition-transform">
-              <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-              </div>
-              <span class="text-xs font-semibold">2.1K</span>
-            </button>
-            <button class="flex flex-col items-center gap-1 hover:scale-110 transition-transform">
-              <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-              </div>
-              <span class="text-xs font-semibold">67</span>
-            </button>
-            <button class="flex flex-col items-center gap-1 hover:scale-110 transition-transform">
-              <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m17 3-5 5-5-5-7 7v11a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V10z"/></svg>
-              </div>
-              <span class="text-xs font-semibold">Share</span>
-            </button>
-            <button class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform">
-              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Video 5: Italian - Intermediate -->
-    <div class="video-card bg-gradient-to-br from-violet-500 to-purple-400">
-      <div class="absolute inset-0 flex items-center justify-center">
-        <button class="w-20 h-20 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center hover:bg-white/40 transition-all">
-          <svg class="h-10 w-10 text-white ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        </button>
-      </div>
-
-      <div class="absolute top-0 left-0 right-0 gradient-overlay-top px-6 pt-[calc(73px+1rem)] pb-6">
-        <div class="flex items-center justify-between">
-          <span class="px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold text-white">🇮🇹 Italian</span>
-          <span class="px-3 py-1.5 bg-purple-500/80 backdrop-blur-sm rounded-full text-xs font-bold text-white">INTERMEDIATE</span>
-        </div>
-      </div>
-
-      <div class="absolute bottom-0 left-0 right-0 gradient-overlay-bottom px-6 pb-[calc(66px+1rem)] pt-6">
-        <div class="flex items-end gap-4">
-          <div class="flex-1 space-y-3">
-            <div>
-              <h3 class="text-2xl font-bold mb-1 text-white">Italian Cuisine Vocabulary</h3>
-              <p class="text-sm text-white/80">Learn to order food like a local in any Italian restaurant</p>
-            </div>
-            <div class="flex items-center gap-4 text-sm text-white/70">
-              <div class="flex items-center gap-1">
-                <svg class="h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                <span class="text-white">6:32</span>
-              </div>
-              <div class="flex items-center gap-1">
-                <svg class="h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                <span class="text-white">32.7K views</span>
-              </div>
-            </div>
-            <!-- Bloc formateur (avatar et nom) retiré -->
-          </div>
-
-          <div class="flex flex-col gap-5 items-center">
-            <button class="flex flex-col items-center gap-1 hover:scale-110 transition-transform">
-              <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-              </div>
-              <span class="text-xs font-semibold">4.5K</span>
-            </button>
-            <button class="flex flex-col items-center gap-1 hover:scale-110 transition-transform">
-              <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-              </div>
-              <span class="text-xs font-semibold">198</span>
-            </button>
-            <button class="flex flex-col items-center gap-1 hover:scale-110 transition-transform">
-              <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m17 3-5 5-5-5-7 7v11a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V10z"/></svg>
-              </div>
-              <span class="text-xs font-semibold">Share</span>
-            </button>
-            <button class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform">
-              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- Bottom Navigation (Fixe, z-50) -->
@@ -476,6 +585,233 @@
         currentIndex = newIndex;
       }
     });
+
+    // ===== ACTION 1: VIDEO QUIZ =====
+    // Simuler l'apparition des questions après 3 secondes (normalement à la fin de la vidéo)
+    setTimeout(() => {
+      const questionsOverlay = document.getElementById('questionsOverlay');
+      if (questionsOverlay) {
+        questionsOverlay.classList.remove('opacity-0', 'pointer-events-none');
+        questionsOverlay.classList.add('opacity-100');
+      }
+    }, 3000);
+
+    // Gestion des options de quiz
+    const quizOptions = document.querySelectorAll('.quiz-option');
+    const validateBtn = document.getElementById('validateBtn');
+    let selectedOption = null;
+    const correctAnswerIndex = 0; // La première option est la bonne réponse
+
+    quizOptions.forEach((option, index) => {
+      option.addEventListener('click', () => {
+        // Retirer la sélection précédente
+        quizOptions.forEach(opt => opt.classList.remove('selected'));
+
+        // Ajouter la sélection
+        option.classList.add('selected');
+        selectedOption = index;
+
+        // Activer le bouton
+        if (validateBtn) {
+          validateBtn.disabled = false;
+          validateBtn.classList.remove('bg-gray-300', 'opacity-50', 'cursor-not-allowed');
+          validateBtn.classList.add('bg-accent', 'hover:scale-105', 'shadow-lg');
+        }
+      });
+    });
+
+    // Validation du quiz
+    if (validateBtn) {
+      validateBtn.addEventListener('click', () => {
+        if (selectedOption === null) return;
+
+        // Désactiver toutes les options
+        quizOptions.forEach(opt => {
+          opt.style.pointerEvents = 'none';
+        });
+
+        // Vérifier la réponse
+        if (selectedOption === correctAnswerIndex) {
+          // Réponse correcte
+          quizOptions[selectedOption].classList.add('correct');
+
+          // Ajouter icône checkmark
+          const checkIcon = document.createElement('div');
+          checkIcon.className = 'absolute right-4 w-8 h-8 rounded-full bg-green-500 flex items-center justify-center';
+          checkIcon.innerHTML = '<svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+          quizOptions[selectedOption].appendChild(checkIcon);
+
+          // Transition après 1.2s
+          setTimeout(() => {
+            // Scroll vers la prochaine action
+            if (currentIndex < videoCards.length - 1) {
+              currentIndex++;
+              videoCards[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }, 1200);
+        } else {
+          // Réponse incorrecte
+          quizOptions[selectedOption].classList.add('incorrect');
+
+          // Ajouter icône X
+          const xIcon = document.createElement('div');
+          xIcon.className = 'absolute right-4 w-8 h-8 rounded-full bg-red-500 flex items-center justify-center';
+          xIcon.innerHTML = '<svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+          quizOptions[selectedOption].appendChild(xIcon);
+
+          // Révéler la bonne réponse
+          quizOptions[correctAnswerIndex].classList.add('correct');
+          const checkIcon = document.createElement('div');
+          checkIcon.className = 'absolute right-4 w-8 h-8 rounded-full bg-green-500 flex items-center justify-center';
+          checkIcon.innerHTML = '<svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+          quizOptions[correctAnswerIndex].appendChild(checkIcon);
+
+          // Transition après 1.8s
+          setTimeout(() => {
+            if (currentIndex < videoCards.length - 1) {
+              currentIndex++;
+              videoCards[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }, 1800);
+        }
+      });
+    }
+
+    // ===== ACTION 3: IMAGE QUIZ =====
+    const quizOptionsImg = document.querySelectorAll('.quiz-option-img');
+    let selectedOptionImg = null;
+    const correctAnswerImg = 0; // La première option est la bonne
+
+    quizOptionsImg.forEach((option, index) => {
+      option.addEventListener('click', () => {
+        // Retirer la sélection précédente
+        quizOptionsImg.forEach(opt => opt.classList.remove('selected'));
+
+        // Ajouter la sélection
+        option.classList.add('selected');
+        selectedOptionImg = index;
+
+        // Simuler la validation automatique après sélection
+        setTimeout(() => {
+          // Désactiver toutes les options
+          quizOptionsImg.forEach(opt => {
+            opt.style.pointerEvents = 'none';
+          });
+
+          if (selectedOptionImg === correctAnswerImg) {
+            // Réponse correcte
+            option.classList.add('correct');
+
+            // Ajouter icône checkmark
+            const checkIcon = document.createElement('div');
+            checkIcon.className = 'absolute right-4 w-8 h-8 rounded-full bg-green-500 flex items-center justify-center';
+            checkIcon.innerHTML = '<svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+            option.appendChild(checkIcon);
+
+            // Transition après 1.2s
+            setTimeout(() => {
+              if (currentIndex < videoCards.length - 1) {
+                currentIndex++;
+                videoCards[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }, 1200);
+          } else {
+            // Réponse incorrecte
+            option.classList.add('incorrect');
+
+            // Ajouter icône X
+            const xIcon = document.createElement('div');
+            xIcon.className = 'absolute right-4 w-8 h-8 rounded-full bg-red-500 flex items-center justify-center';
+            xIcon.innerHTML = '<svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+            option.appendChild(xIcon);
+
+            // Révéler la bonne réponse
+            quizOptionsImg[correctAnswerImg].classList.add('correct');
+            const checkIcon = document.createElement('div');
+            checkIcon.className = 'absolute right-4 w-8 h-8 rounded-full bg-green-500 flex items-center justify-center';
+            checkIcon.innerHTML = '<svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+            quizOptionsImg[correctAnswerImg].appendChild(checkIcon);
+
+            // Transition après 1.8s
+            setTimeout(() => {
+              if (currentIndex < videoCards.length - 1) {
+                currentIndex++;
+                videoCards[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }, 1800);
+          }
+        }, 300);
+      });
+    });
+
+    // ===== ACTION 4: SPEAKING TASK =====
+    const micBtn = document.getElementById('micBtn');
+    const recordTimer = document.getElementById('recordTimer');
+    const recordingLabel = document.getElementById('recordingLabel');
+    const resultModal = document.getElementById('resultModal');
+    let isRecording = false;
+    let recordingTime = 0;
+    let timerInterval;
+
+    if (micBtn) {
+      micBtn.addEventListener('click', () => {
+        if (!isRecording) {
+          // Démarrer l'enregistrement
+          isRecording = true;
+          micBtn.classList.add('recording');
+          recordTimer.classList.remove('hidden');
+          recordingLabel.classList.remove('hidden');
+
+          // Démarrer le timer
+          recordingTime = 0;
+          timerInterval = setInterval(() => {
+            recordingTime++;
+            const minutes = Math.floor(recordingTime / 60).toString().padStart(2, '0');
+            const seconds = (recordingTime % 60).toString().padStart(2, '0');
+            recordTimer.textContent = `${minutes}:${seconds}`;
+
+            // Changer la couleur selon le temps
+            if (recordingTime > 15) {
+              recordTimer.style.color = '#EF4444'; // Rouge
+            } else if (recordingTime > 10) {
+              recordTimer.style.color = '#FBBF24'; // Jaune
+            }
+
+            // Arrêt automatique à 20s
+            if (recordingTime >= 20) {
+              stopRecording();
+            }
+          }, 1000);
+        } else {
+          // Arrêter l'enregistrement
+          stopRecording();
+        }
+      });
+    }
+
+    function stopRecording() {
+      isRecording = false;
+      micBtn.classList.remove('recording');
+      clearInterval(timerInterval);
+
+      // Masquer le timer
+      setTimeout(() => {
+        recordTimer.classList.add('hidden');
+        recordingLabel.classList.add('hidden');
+        recordTimer.style.color = 'white';
+
+        // Afficher le modal de résultat après analyse simulée (2s)
+        setTimeout(() => {
+          if (resultModal) {
+            resultModal.classList.remove('hidden');
+            const modalContent = resultModal.querySelector('div > div');
+            setTimeout(() => {
+              modalContent.style.transform = 'scale(1)';
+            }, 50);
+          }
+        }, 2000);
+      }, 500);
+    }
   </script>
 </body>
 </html>
