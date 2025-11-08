@@ -43,16 +43,17 @@
       font-family: 'Inter', system-ui, sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      overflow: hidden;
+      overflow: hidden; /* Empêche le scroll global */
+      background-color: #000; /* Fond noir pour les bords sur grands écrans */
     }
     h1, h2, h3, h4, h5, h6 { font-weight: 700; }
     .shadow-soft { box-shadow: 0 2px 16px -4px rgba(0, 0, 0, 0.06); }
     .shadow-medium { box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.1); }
     .transition-smooth { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 
-    /* MODIFICATION: Style inspiré de l'exemple (Plein écran) */
     .feed-container {
-      height: 100vh;
+      height: 100vh; /* Utilise 100vh standard pour meilleure compatibilité mobile */
+      height: 100dvh; /* Utilise dynamic viewport height si supporté */
       margin-top: 0;
       margin-bottom: 0;
       scroll-snap-type: y mandatory;
@@ -60,20 +61,19 @@
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
+      background-color: #000;
     }
     .feed-container::-webkit-scrollbar {
       display: none;
     }
 
-    /* MODIFICATION: Style inspiré de l'exemple (Cartes arrondies) */
     .video-card {
       height: 100%;
+      width: 100%;
       scroll-snap-align: start;
       scroll-snap-stop: always;
       position: relative;
-      /* MODIFICATION: Lignes supprimées pour retirer les arrondis */
-      /* border-radius: 1rem; */
-      /* overflow: hidden; */
+      overflow: hidden; /* Important pour contenir les éléments absolus */
     }
 
     /* Gradient overlays */
@@ -242,14 +242,6 @@
         </div>
       </div>
 
-      <!-- Indicateur "Tap pour révéler" -->
-      <div class="absolute bottom-[180px] left-1/2 transform -translate-x-1/2 z-10 animate-bounce">
-        <div class="px-4 py-2 bg-white/90 backdrop-blur rounded-full text-xs font-semibold text-gray-800 flex items-center gap-2">
-          <span>↑</span>
-          <span>Question</span>
-        </div>
-      </div>
-
       <!-- Footer Overlay -->
       <div class="absolute bottom-0 left-0 right-0 gradient-overlay-bottom px-6 pb-[calc(66px+1rem)] pt-6 z-10">
         <div>
@@ -258,36 +250,49 @@
         </div>
       </div>
 
-      <!-- Questions Overlay (apparaît à la fin de la vidéo) -->
-      <div id="questionsOverlay" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-15 opacity-0 pointer-events-none transition-opacity duration-300">
-        <!-- Bouton pour revoir la vidéo -->
-        <button id="replayVideoBtn" class="absolute top-[100px] right-6 w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm border-2 border-white/50 flex items-center justify-center z-30 hover:bg-white transition-all hover:scale-110 shadow-lg">
-          <svg class="h-6 w-6 text-accent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+      <!-- Bouton Actions Vidéo (Toujours visible) -->
+      <div class="absolute top-1/2 right-4 transform -translate-y-1/2 flex flex-col gap-4 z-30">
+        <!-- Bouton Replay Vidéo -->
+        <button id="replayVideoBtn" class="w-11 h-11 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition-transform active:scale-90" title="Revoir la vidéo">
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
         </button>
+      </div>
 
-        <div class="absolute bottom-[160px] left-1/2 transform -translate-x-1/2 w-[calc(100%-48px)] max-w-[400px] bg-white/95 backdrop-blur-lg rounded-3xl p-5 shadow-2xl border border-white/20">
-          <!-- Question -->
-          <h4 class="text-base font-bold text-gray-800 text-center mb-4">Que dit l'agent ?</h4>
+      <!-- Bouton "Je suis prêt à répondre" (visible initialement) -->
+      <button id="showQuestionsBtn" class="absolute bottom-[160px] left-1/2 transform -translate-x-1/2 bg-accent hover:bg-accent/90 text-white px-6 py-3 rounded-full font-bold shadow-lg z-30 flex items-center gap-2 transition-all active:scale-95 animate-scale-in">
+        <span>Je suis prêt à répondre</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd" />
+        </svg>
+      </button>
 
-          <!-- Options -->
-          <div class="flex flex-col gap-2.5">
-            <button class="quiz-option group bg-white border-2 border-gray-200 rounded-xl p-3 text-left transition-all duration-200 hover:border-accent hover:-translate-y-0.5 hover:shadow-lg">
-              <span class="text-sm font-medium text-gray-800">A) Bonjour monsieur, votre passeport s'il vous plaît.</span>
-            </button>
+      <!-- Questions Overlay (masqué au départ, apparaît après clic) -->
+      <div id="questionsOverlay" class="absolute inset-0 bg-black/60 backdrop-blur-md z-40 flex items-end opacity-0 pointer-events-none transition-opacity duration-500">
+        <div class="w-full p-5 pb-[100px]">
+          <div class="bg-white rounded-2xl p-5 shadow-2xl animate-scale-in">
+            <div class="flex justify-between items-center mb-4">
+              <h4 class="text-base font-bold text-gray-900">Que dit l'agent ?</h4>
+              <!-- Bouton pour masquer temporairement les questions -->
+              <button id="hideQuestionsBtn" class="text-xs text-gray-500 hover:text-gray-800 flex items-center gap-1 p-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+                Fermer
+              </button>
+            </div>
 
-            <button class="quiz-option group bg-white border-2 border-gray-200 rounded-xl p-3 text-left transition-all duration-200 hover:border-accent hover:-translate-y-0.5 hover:shadow-lg">
-              <span class="text-sm font-medium text-gray-800">B) Où allez-vous ?</span>
-            </button>
-
-            <button class="quiz-option group bg-white border-2 border-gray-200 rounded-xl p-3 text-left transition-all duration-200 hover:border-accent hover:-translate-y-0.5 hover:shadow-lg">
-              <span class="text-sm font-medium text-gray-800">C) Vous aimez Paris ?</span>
-            </button>
+            <div class="flex flex-col gap-2">
+              <button class="quiz-option w-full text-left p-3.5 rounded-xl border-2 border-gray-100 bg-gray-50 text-sm font-medium text-gray-700 hover:bg-white hover:border-gray-200 active:scale-[0.98] transition-all">
+                A) Bonjour monsieur, votre passeport s'il vous plaît.
+              </button>
+              <button class="quiz-option w-full text-left p-3.5 rounded-xl border-2 border-gray-100 bg-gray-50 text-sm font-medium text-gray-700 hover:bg-white hover:border-gray-200 active:scale-[0.98] transition-all">
+                B) Où allez-vous ?
+              </button>
+              <button class="quiz-option w-full text-left p-3.5 rounded-xl border-2 border-gray-100 bg-gray-50 text-sm font-medium text-gray-700 hover:bg-white hover:border-gray-200 active:scale-[0.98] transition-all">
+                C) Vous aimez Paris ?
+              </button>
+            </div>
           </div>
-
-          <!-- Bouton Valider -->
-          <button id="validateBtn" class="w-full h-12 bg-gray-300 rounded-full text-white font-bold text-sm mt-4 transition-all duration-300 opacity-50 cursor-not-allowed" disabled>
-            Valider
-          </button>
         </div>
       </div>
     </div>
@@ -295,243 +300,200 @@
     <!-- ===== ACTION 2: VOICE SPELL ===== -->
     <div class="video-card bg-gradient-to-br from-blue-600 to-blue-400">
       <!-- Background avec image statique -->
-      <div class="absolute inset-0 bg-cover bg-center brightness-75" style="background-image: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.4) 100%), url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800');">
-      </div>
+      <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80'); filter: brightness(0.6);"></div>
+
+      <!-- Overlays pour lisibilité -->
+      <div class="absolute top-0 left-0 right-0 h-32 gradient-overlay-top pointer-events-none"></div>
+      <div class="absolute bottom-0 left-0 right-0 h-48 gradient-overlay-bottom pointer-events-none"></div>
 
       <!-- Header Overlay -->
-      <div class="absolute top-0 left-0 right-0 gradient-overlay-top px-6 pt-[calc(73px+1rem)] pb-6 z-10">
+      <div class="absolute top-0 left-0 right-0 px-6 pt-[calc(73px+1rem)] pb-6 z-10">
         <div class="flex items-center justify-between">
-          <span class="px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold text-white">Mission 1</span>
-          <span class="px-3 py-1.5 bg-accent/80 backdrop-blur-sm rounded-full text-xs font-bold text-white">VOICE SPELL</span>
+          <span class="px-2.5 py-1 bg-black/30 backdrop-blur-md rounded-lg text-xs font-medium text-white border border-white/10">Mission 1</span>
+          <span class="px-2.5 py-1 bg-accent/90 backdrop-blur-md rounded-lg text-[10px] font-bold text-white uppercase tracking-wider shadow-sm">Prononciation</span>
         </div>
       </div>
 
-      <!-- Bouton Replay (haut droit) -->
-      <button class="absolute top-[110px] right-6 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/50 flex items-center justify-center z-30 hover:bg-white/30 transition-all hover:rotate-180 hover:scale-110">
-        <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
-      </button>
-
-      <!-- Caption synchronisée (milieu de l'écran) -->
-      <div class="absolute top-[35%] left-1/2 transform -translate-x-1/2 w-[calc(100%-64px)] max-w-[450px] z-20">
-        <div class="px-5 py-3 bg-black/85 backdrop-blur-md rounded-xl">
-          <p class="text-lg font-bold text-white text-center leading-relaxed tracking-wide" style="text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
-            Bonjour monsieur, votre passeport s'il vous plaît.
+      <!-- Contenu central réorganisé -->
+      <div class="absolute inset-0 flex flex-col items-center justify-center px-6 z-20 pt-10 pb-20">
+        <!-- Phrase principale -->
+        <div class="bg-black/40 backdrop-blur-md p-4 rounded-2xl border border-white/10 mb-8 max-w-sm text-center">
+          <p class="text-lg md:text-xl font-bold text-white leading-snug">
+            "Bonjour monsieur, votre passeport s'il vous plaît."
           </p>
         </div>
-      </div>
 
-      <!-- Blocs phonétiques (après le milieu) -->
-      <div class="absolute top-[48%] left-0 right-0 px-4 z-20">
-        <div class="flex flex-wrap justify-center gap-2 max-w-md mx-auto">
-          <!-- Bloc 1 -->
-          <div class="inline-flex flex-col bg-white/95 backdrop-blur-md border-2 border-white/50 rounded-xl px-3 py-2.5 shadow-lg">
-            <span class="text-sm font-bold text-gray-800 text-center mb-1 tracking-wide">Bonjour</span>
-            <div class="h-0.5 bg-gradient-to-r from-transparent via-accent/50 to-transparent my-1"></div>
-            <span class="text-xs text-accent text-center font-mono italic tracking-wider">/bohn-zhoor/</span>
+        <!-- Blocs phonétiques (plus compacts et flexibles) -->
+        <div class="flex flex-wrap justify-center gap-2 w-full max-w-sm">
+          <div class="flex flex-col bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 text-center shadow-md">
+            <span class="text-xs font-bold text-gray-900">Bonjour</span>
+            <span class="text-[10px] text-accent font-mono mt-0.5">/bohn-zhoor/</span>
           </div>
-
-          <!-- Bloc 2 -->
-          <div class="inline-flex flex-col bg-white/95 backdrop-blur-md border-2 border-white/50 rounded-xl px-3 py-2.5 shadow-lg">
-            <span class="text-sm font-bold text-gray-800 text-center mb-1 tracking-wide">monsieur</span>
-            <div class="h-0.5 bg-gradient-to-r from-transparent via-accent/50 to-transparent my-1"></div>
-            <span class="text-xs text-accent text-center font-mono italic tracking-wider">/muh-syuh/</span>
+          <div class="flex flex-col bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 text-center shadow-md">
+            <span class="text-xs font-bold text-gray-900">monsieur</span>
+            <span class="text-[10px] text-accent font-mono mt-0.5">/muh-syuh/</span>
           </div>
-
-          <!-- Bloc 3 -->
-          <div class="inline-flex flex-col bg-white/95 backdrop-blur-md border-2 border-white/50 rounded-xl px-3 py-2.5 shadow-lg">
-            <span class="text-sm font-bold text-gray-800 text-center mb-1 tracking-wide">votre passeport</span>
-            <div class="h-0.5 bg-gradient-to-r from-transparent via-accent/50 to-transparent my-1"></div>
-            <span class="text-xs text-accent text-center font-mono italic tracking-wider">/vo-truh pahs-por/</span>
+          <div class="flex flex-col bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 text-center shadow-md">
+            <span class="text-xs font-bold text-gray-900">votre passeport</span>
+            <span class="text-[10px] text-accent font-mono mt-0.5">/vo-truh pahs-por/</span>
           </div>
-
-          <!-- Bloc 4 -->
-          <div class="inline-flex flex-col bg-white/95 backdrop-blur-md border-2 border-white/50 rounded-xl px-3 py-2.5 shadow-lg">
-            <span class="text-sm font-bold text-gray-800 text-center mb-1 tracking-wide">s'il vous plaît</span>
-            <div class="h-0.5 bg-gradient-to-r from-transparent via-accent/50 to-transparent my-1"></div>
-            <span class="text-xs text-accent text-center font-mono italic tracking-wider">/seel voo pleh/</span>
+          <div class="flex flex-col bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 text-center shadow-md">
+            <span class="text-xs font-bold text-gray-900">s'il vous plaît</span>
+            <span class="text-[10px] text-accent font-mono mt-0.5">/seel voo pleh/</span>
           </div>
         </div>
       </div>
 
       <!-- Footer Overlay -->
-      <div class="absolute bottom-0 left-0 right-0 gradient-overlay-bottom px-6 pb-[calc(66px+1rem)] pt-6 z-10">
+      <div class="absolute bottom-0 left-0 right-0 px-6 pb-[calc(66px+1rem)] pt-6 z-10">
         <div>
-          <h3 class="text-2xl font-bold mb-2 text-white">Épisode 1 - Contrôle des passeports</h3>
-          <p class="text-sm text-white/80 leading-relaxed">Maîtriser la prononciation correcte</p>
+          <h3 class="text-xl font-bold mb-1 text-white drop-shadow-md">Découpage Phonétique</h3>
+          <p class="text-sm text-white/90 drop-shadow-sm">Visualisez les sons pour mieux prononcer.</p>
         </div>
       </div>
     </div>
 
     <!-- ===== ACTION 3: QUIZ (Image) ===== -->
-    <div class="video-card bg-gradient-to-br from-blue-500 to-blue-400">
+    <div class="video-card bg-zinc-800">
+      <div class="absolute inset-0 bg-gradient-to-br from-indigo-600 to-blue-500 opacity-50"></div>
 
       <!-- Header Overlay -->
-      <div class="absolute top-0 left-0 right-0 gradient-overlay-top px-6 pt-[calc(73px+1rem)] pb-6 z-10">
+      <div class="absolute top-0 left-0 right-0 px-6 pt-[calc(73px+1rem)] pb-6 z-10">
         <div class="flex items-center justify-between">
-          <span class="px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold text-white">Mission 1</span>
-          <span class="px-3 py-1.5 bg-accent/80 backdrop-blur-sm rounded-full text-xs font-bold text-white">QUIZ</span>
+          <span class="px-2.5 py-1 bg-black/20 backdrop-blur-md rounded-lg text-xs font-medium text-white border border-white/10">Mission 1</span>
+          <span class="px-2.5 py-1 bg-accent/90 backdrop-blur-md rounded-lg text-[10px] font-bold text-white uppercase tracking-wider shadow-sm">Quiz Visuel</span>
         </div>
       </div>
 
-      <!-- Image centrale -->
-      <div class="absolute top-[100px] left-1/2 transform -translate-x-1/2 w-[calc(100%-80px)] max-w-[280px] aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl bg-white border-4 border-white animate-scale-in">
-        <img src="https://images.unsplash.com/photo-1578174959098-c36547a588ea?w=400" alt="Passport" class="w-full h-full object-cover">
-      </div>
+      <!-- Conteneur principal avec scroll si nécessaire sur très petits écrans -->
+      <div class="absolute inset-0 flex flex-col px-6 pt-[110px] pb-[90px] z-20 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+        <!-- Image Question -->
+        <div class="w-40 h-40 mx-auto mb-6 rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20 flex-shrink-0 bg-black/20">
+          <img src="https://images.unsplash.com/photo-1544895860-925696c73394?w=400&q=80" alt="Question Image" class="w-full h-full object-cover">
+        </div>
 
-      <!-- Question -->
-      <div class="absolute top-[340px] left-0 right-0 px-8 text-center z-10">
-        <h3 class="text-base font-bold text-white mb-4" style="text-shadow: 0 2px 8px rgba(0,0,0,0.3);">
-          Associe le mot "passeport" à l'image correcte
+        <h3 class="text-center text-white font-bold text-lg mb-6 drop-shadow-md flex-shrink-0">
+          Associez l'image au bon mot :
         </h3>
-      </div>
 
-      <!-- Options de réponse -->
-      <div class="absolute top-[405px] left-0 right-0 px-6 flex flex-col gap-2.5 z-10">
-        <button class="quiz-option-img bg-white/98 border-2 border-transparent rounded-xl px-4 py-3 flex items-center gap-3 shadow-lg transition-all duration-250 hover:-translate-y-1 hover:shadow-xl hover:border-accent/30">
-          <div class="w-7 h-7 bg-gray-100 rounded-lg flex items-center justify-center font-bold text-base text-gray-800 flex-shrink-0">A</div>
-          <span class="text-sm font-medium text-gray-800 flex-1">🛂 Passeport</span>
-        </button>
-
-        <button class="quiz-option-img bg-white/98 border-2 border-transparent rounded-xl px-4 py-3 flex items-center gap-3 shadow-lg transition-all duration-250 hover:-translate-y-1 hover:shadow-xl hover:border-accent/30">
-          <div class="w-7 h-7 bg-gray-100 rounded-lg flex items-center justify-center font-bold text-base text-gray-800 flex-shrink-0">B</div>
-          <span class="text-sm font-medium text-gray-800 flex-1">🎫 Billet d'avion</span>
-        </button>
-
-        <button class="quiz-option-img bg-white/98 border-2 border-transparent rounded-xl px-4 py-3 flex items-center gap-3 shadow-lg transition-all duration-250 hover:-translate-y-1 hover:shadow-xl hover:border-accent/30">
-          <div class="w-7 h-7 bg-gray-100 rounded-lg flex items-center justify-center font-bold text-base text-gray-800 flex-shrink-0">C</div>
-          <span class="text-sm font-medium text-gray-800 flex-1">💼 Valise</span>
-        </button>
-      </div>
-
-      <!-- Bouton Valider (supprimé car validation automatique) -->
-
-      <!-- Footer Overlay -->
-      <div class="absolute bottom-0 left-0 right-0 gradient-overlay-bottom px-6 pb-[calc(66px+1rem)] pt-6 z-10">
-        <div>
-          <h3 class="text-2xl font-bold mb-2 text-white">Épisode 1 - Contrôle des passeports</h3>
-          <p class="text-sm text-white/80 leading-relaxed">Testez votre compréhension</p>
+        <!-- Options (Flex grow pour occuper l'espace dispo, mais pas trop) -->
+        <div class="flex flex-col gap-3 w-full max-w-sm mx-auto">
+          <button class="quiz-option-img bg-white rounded-xl p-3 flex items-center gap-3 shadow-md active:scale-[0.98] transition-all">
+            <span class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg text-gray-700 font-bold text-sm">A</span>
+            <span class="text-gray-800 font-medium">Un passeport</span>
+          </button>
+          <button class="quiz-option-img bg-white rounded-xl p-3 flex items-center gap-3 shadow-md active:scale-[0.98] transition-all">
+            <span class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg text-gray-700 font-bold text-sm">B</span>
+            <span class="text-gray-800 font-medium">Une carte d'embarquement</span>
+          </button>
+          <button class="quiz-option-img bg-white rounded-xl p-3 flex items-center gap-3 shadow-md active:scale-[0.98] transition-all">
+            <span class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg text-gray-700 font-bold text-sm">C</span>
+            <span class="text-gray-800 font-medium">Un visa touristique</span>
+          </button>
+          <!-- Espace vide pour garantir que le dernier élément n'est pas caché par le footer sur petits écrans -->
+          <div class="h-4 flex-shrink-0"></div>
         </div>
       </div>
     </div>
 
     <!-- ===== ACTION 4: SPEAKING TASK ===== -->
-    <div class="video-card bg-gradient-to-br from-blue-600 to-blue-400">
+    <div class="video-card bg-zinc-900">
+      <!-- Fond plus sombre pour faire ressortir l'UI -->
+      <div class="absolute inset-0 bg-gradient-to-b from-indigo-900/40 to-black/60"></div>
+      <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
 
       <!-- Header Overlay -->
-      <div class="absolute top-0 left-0 right-0 gradient-overlay-top px-6 pt-[calc(73px+1rem)] pb-6 z-10">
+      <div class="absolute top-0 left-0 right-0 px-6 pt-[calc(73px+1rem)] pb-6 z-10">
         <div class="flex items-center justify-between">
-          <span class="px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold text-white">Mission 1</span>
-          <span class="px-3 py-1.5 bg-accent/80 backdrop-blur-sm rounded-full text-xs font-bold text-white">SPEAKING</span>
+          <span class="px-2.5 py-1 bg-white/10 backdrop-blur-md rounded-lg text-xs font-medium text-white border border-white/10">Mission 1</span>
+          <span class="px-2.5 py-1 bg-accent/90 backdrop-blur-md rounded-lg text-[10px] font-bold text-white uppercase tracking-wider shadow-sm">Speaking</span>
         </div>
       </div>
 
-      <!-- Bouton "Écouter l'exemple" -->
-      <button class="absolute top-[100px] left-1/2 transform -translate-x-1/2 flex items-center gap-3 px-7 py-3.5 bg-white/95 backdrop-blur-md border-2 border-white/60 rounded-full shadow-xl transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 hover:shadow-2xl hover:bg-white hover:border-accent z-30">
-        <svg class="h-6 w-6 text-accent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
-        <span class="text-base font-semibold text-gray-800 whitespace-nowrap">Écouter l'exemple</span>
-      </button>
-
-      <!-- Instruction -->
-      <div class="absolute top-[190px] left-0 right-0 px-8 text-center z-10">
-        <p class="text-sm font-semibold text-white/90 mb-3 uppercase tracking-wide">Répétez la phrase :</p>
-        <div class="inline-block px-5 py-3 bg-black/25 backdrop-blur-sm rounded-xl border-2 border-white/20">
-          <p class="text-lg font-bold text-white leading-snug tracking-wide" style="text-shadow: 0 3px 12px rgba(0,0,0,0.4);">
-            Bonjour monsieur, votre passeport s'il vous plaît
-          </p>
-        </div>
-      </div>
-
-      <!-- Bouton Microphone principal -->
-      <div class="absolute top-[420px] left-1/2 transform -translate-x-1/2 flex flex-col items-center z-20">
-        <button id="micBtn" class="relative w-[140px] h-[140px] rounded-full bg-white/98 border-4 border-white shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-108 hover:shadow-3xl">
-          <svg class="h-[60px] w-[60px] text-accent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
-
-          <!-- Ondes sonores (animation lors de l'enregistrement) -->
-          <div class="sound-ring absolute inset-0 rounded-full border-3 border-red-500/50 opacity-0 pointer-events-none"></div>
-          <div class="sound-ring absolute inset-0 rounded-full border-3 border-red-500/50 opacity-0 pointer-events-none"></div>
-          <div class="sound-ring absolute inset-0 rounded-full border-3 border-red-500/50 opacity-0 pointer-events-none"></div>
+      <div class="absolute inset-0 flex flex-col items-center justify-center px-6 z-20">
+        <!-- Bouton écouter exemple (plus petit) -->
+        <button class="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white text-sm font-medium mb-8 hover:bg-white/20 transition-colors">
+          <svg class="w-4 h-4 text-accent" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" />
+          </svg>
+          Écouter l'exemple
         </button>
 
-        <!-- Label sous le micro -->
-        <p class="mt-6 text-sm font-medium text-white/80">Appuyez pour parler</p>
-
-        <!-- Timer (caché par défaut, apparaît en enregistrement) -->
-        <div id="recordTimer" class="hidden mt-5 text-4xl font-bold text-white font-mono tracking-wider" style="text-shadow: 0 2px 12px rgba(0,0,0,0.5);">
-          00:00
+        <!-- Phrase à répéter (taille réduite) -->
+        <div class="text-center mb-12">
+          <p class="text-gray-400 text-xs uppercase tracking-wider font-semibold mb-3">Répétez à voix haute</p>
+          <p class="text-xl md:text-2xl font-bold text-white leading-relaxed px-4">
+            "Bonjour monsieur, votre passeport s'il vous plaît"
+          </p>
         </div>
-        <p id="recordingLabel" class="hidden mt-2 text-sm font-medium text-white/80">Enregistrement en cours...</p>
-      </div>
 
-      <!-- Footer Overlay -->
-      <div class="absolute bottom-0 left-0 right-0 gradient-overlay-bottom px-6 pb-[calc(66px+1rem)] pt-6 z-10">
-        <div>
-          <h3 class="text-2xl font-bold mb-2 text-white">Épisode 1 - Contrôle des passeports</h3>
-          <p class="text-sm text-white/80 leading-relaxed">Pratiquez votre prononciation</p>
-        </div>
-      </div>
-
-      <!-- Modal de résultat (caché par défaut) -->
-      <div id="resultModal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-xl z-100 flex items-center justify-center">
-        <div class="w-[calc(100%-48px)] max-w-[420px] bg-white rounded-3xl p-9 shadow-3xl transform scale-0 transition-transform duration-500">
-          <h2 class="text-3xl font-bold text-green-500 text-center mb-7 flex items-center justify-center gap-3">
-            Excellent ! <span class="text-3xl">🎉</span>
-          </h2>
-
-          <!-- Métriques -->
-          <div class="space-y-4 mb-7">
-            <div>
-              <div class="flex justify-between mb-2">
-                <span class="text-sm font-medium text-gray-700">Prononciation</span>
-                <span class="text-sm font-bold text-gray-800">92%</span>
-              </div>
-              <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
-                <div class="h-full bg-green-500 rounded-full" style="width: 92%"></div>
-              </div>
-            </div>
-
-            <div>
-              <div class="flex justify-between mb-2">
-                <span class="text-sm font-medium text-gray-700">Rythme</span>
-                <span class="text-sm font-bold text-gray-800">88%</span>
-              </div>
-              <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
-                <div class="h-full bg-green-500 rounded-full" style="width: 88%"></div>
-              </div>
-            </div>
-
-            <div>
-              <div class="flex justify-between mb-2">
-                <span class="text-sm font-medium text-gray-700">Intonation</span>
-                <span class="text-sm font-bold text-gray-800">85%</span>
-              </div>
-              <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
-                <div class="h-full bg-green-500 rounded-full" style="width: 85%"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Points à améliorer -->
-          <div class="bg-blue-50 rounded-2xl p-4 mb-7">
-            <p class="text-sm font-semibold text-gray-700 mb-2">💡 Points à améliorer :</p>
-            <ul class="text-sm text-gray-600 space-y-1">
-              <li>• Intonation sur "monsieur"</li>
-              <li>• Liaison "votre" + "passeport"</li>
-            </ul>
-          </div>
-
-          <!-- Boutons d'action -->
-          <div class="flex gap-3.5">
-            <button id="retryBtn" class="flex-1 h-13 bg-transparent border-2 border-gray-200 rounded-2xl text-base font-semibold text-gray-600 hover:bg-gray-50 transition-all">
-              Réessayer
-            </button>
-            <button id="continueBtn" class="flex-1 h-13 bg-accent rounded-2xl text-base font-bold text-white shadow-lg hover:scale-105 transition-all">
-              Continuer ✓
-            </button>
-          </div>
+        <!-- Bouton Micro -->
+        <div class="relative">
+          <button id="micBtn" class="w-24 h-24 rounded-full bg-accent flex items-center justify-center shadow-[0_0_40px_-10px_rgba(45,212,191,0.5)] transition-all active:scale-95 hover:scale-105">
+            <svg id="micIcon" class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+            </svg>
+            <!-- Ondes d'animation (cachées par défaut) -->
+            <div class="sound-ring absolute inset-0 rounded-full border-2 border-red-500 opacity-0 pointer-events-none"></div>
+            <div class="sound-ring absolute inset-0 rounded-full border-2 border-red-500 opacity-0 pointer-events-none"></div>
+          </button>
+          <p id="micLabel" class="text-white/60 text-sm font-medium text-center mt-4">Appuyez pour parler</p>
+          <p id="recordTimer" class="text-red-400 text-lg font-mono font-bold text-center mt-2 hidden">00:00</p>
         </div>
       </div>
     </div>
 
+  </div> <!-- Fin feed-container -->
+
+  <!-- MODALE RÉSULTAT (Hors du flux, z-index très élevé) -->
+  <div id="resultModal" class="fixed inset-0 z-[100] flex items-center justify-center px-4 pointer-events-none opacity-0 transition-opacity duration-300">
+    <!-- Backdrop sombre -->
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+
+    <!-- Contenu Modale -->
+    <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl transform scale-90 transition-transform duration-300 relative">
+      <div class="text-center mb-6">
+        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <span class="text-3xl">🎉</span>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Excellent !</h2>
+        <p class="text-gray-500 text-sm">Votre prononciation est très bonne.</p>
+      </div>
+
+      <!-- Scores -->
+      <div class="space-y-4 mb-6">
+        <div>
+          <div class="flex justify-between text-sm mb-1.5">
+            <span class="font-medium text-gray-700">Global</span>
+            <span class="font-bold text-accent">92%</span>
+          </div>
+          <div class="h-2.5 bg-gray-100 rounded-full overflow-hidden">
+            <div class="h-full bg-accent w-[92%] rounded-full"></div>
+          </div>
+        </div>
+        <!-- Détails (optionnels pour gagner de la place si besoin) -->
+        <div class="grid grid-cols-2 gap-4 pt-2">
+          <div class="bg-gray-50 p-3 rounded-xl text-center">
+            <span class="block text-xs text-gray-500 mb-1">Rythme</span>
+            <span class="block text-lg font-bold text-gray-800">88%</span>
+          </div>
+          <div class="bg-gray-50 p-3 rounded-xl text-center">
+            <span class="block text-xs text-gray-500 mb-1">Intonation</span>
+            <span class="block text-lg font-bold text-gray-800">95%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex gap-3">
+        <button id="retryBtn" class="flex-1 py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-colors active:scale-95">
+          Réessayer
+        </button>
+        <button id="continueBtn" class="flex-1 py-3 px-4 bg-accent hover:bg-accent/90 text-white font-bold rounded-xl shadow-md transition-all active:scale-95">
+          Continuer
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Bottom Navigation (Fixe, z-50) -->
@@ -559,316 +521,229 @@
   </nav>
 
   <script>
-    // Keyboard navigation for video feed
+    // --- GESTION DU SCROLL & NAVIGATION ---
     const feedContainer = document.querySelector('.feed-container');
     const videoCards = document.querySelectorAll('.video-card');
     let currentIndex = 0;
 
+    // Navigation Clavier (Desktop debug)
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowDown' && currentIndex < videoCards.length - 1) {
-        e.preventDefault();
-        currentIndex++;
-        videoCards[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        scrollToCard(currentIndex + 1);
       } else if (e.key === 'ArrowUp' && currentIndex > 0) {
-        e.preventDefault();
-        currentIndex--;
-        videoCards[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        scrollToCard(currentIndex - 1);
       }
     });
 
-    // Update current index based on scroll position
+    function scrollToCard(index) {
+      currentIndex = index;
+      videoCards[currentIndex].scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Mise à jour de l'index courant lors du scroll manuel
+    let isScrolling;
     feedContainer.addEventListener('scroll', () => {
-      const scrollPosition = feedContainer.scrollTop;
-      const cardHeight = videoCards[0].offsetHeight;
-      const newIndex = Math.round(scrollPosition / cardHeight);
-      if (newIndex >= 0 && newIndex < videoCards.length) {
-        currentIndex = newIndex;
-      }
+      clearTimeout(isScrolling);
+      isScrolling = setTimeout(() => {
+        const scrollPosition = feedContainer.scrollTop;
+        const cardHeight = feedContainer.clientHeight;
+        currentIndex = Math.round(scrollPosition / cardHeight);
+      }, 100);
     });
 
-    // ===== ACTION 1: VIDEO QUIZ =====
-    // Simuler l'apparition des questions après 3 secondes (normalement à la fin de la vidéo)
-    setTimeout(() => {
-      const questionsOverlay = document.getElementById('questionsOverlay');
-      if (questionsOverlay) {
-        questionsOverlay.classList.remove('opacity-0', 'pointer-events-none');
-        questionsOverlay.classList.add('opacity-100');
-      }
-    }, 3000);
+    // --- VIDEO QUIZ LOGIC ---
+    let questionsShown = false;
+    const questionsOverlay = document.getElementById('questionsOverlay');
+    const showQuestionsBtn = document.getElementById('showQuestionsBtn');
+    const hideQuestionsBtn = document.getElementById('hideQuestionsBtn');
+    const replayVideoBtn = document.getElementById('replayVideoBtn');
 
-    // Gestion des options de quiz
+    function showQuestions() {
+      questionsShown = true;
+      if(questionsOverlay) {
+        questionsOverlay.classList.remove('opacity-0', 'pointer-events-none');
+        questionsOverlay.classList.add('opacity-100', 'pointer-events-auto');
+      }
+      if(showQuestionsBtn) showQuestionsBtn.classList.add('hidden');
+    }
+
+    function hideQuestions() {
+      questionsShown = false;
+      if(questionsOverlay) {
+        questionsOverlay.classList.add('opacity-0', 'pointer-events-none');
+        questionsOverlay.classList.remove('opacity-100', 'pointer-events-auto');
+      }
+      if(showQuestionsBtn) showQuestionsBtn.classList.remove('hidden');
+    }
+
+    // Écouteurs Video Quiz
+    if(showQuestionsBtn) showQuestionsBtn.addEventListener('click', showQuestions);
+    if(hideQuestionsBtn) hideQuestionsBtn.addEventListener('click', hideQuestions);
+
+    if(replayVideoBtn) replayVideoBtn.addEventListener('click', () => {
+      hideQuestions();
+      // Simule une relecture de 3s
+      setTimeout(() => {
+        // L'utilisateur doit cliquer sur "Je suis prêt" pour réafficher les questions
+      }, 3000);
+    });
+
+    // Interaction Options Quiz (Video)
     const quizOptions = document.querySelectorAll('.quiz-option');
-    const validateBtn = document.getElementById('validateBtn');
-    let selectedOption = null;
-    const correctAnswerIndex = 0; // La première option est la bonne réponse
+    const correctAnswerIndex = 0;
 
     quizOptions.forEach((option, index) => {
-      option.addEventListener('click', () => {
-        // Retirer la sélection précédente
-        quizOptions.forEach(opt => opt.classList.remove('selected'));
-
-        // Ajouter la sélection
-        option.classList.add('selected');
-        selectedOption = index;
-
-        // Activer le bouton
-        if (validateBtn) {
-          validateBtn.disabled = false;
-          validateBtn.classList.remove('bg-gray-300', 'opacity-50', 'cursor-not-allowed');
-          validateBtn.classList.add('bg-accent', 'hover:scale-105', 'shadow-lg');
+      option.addEventListener('click', function() {
+        // Reset frères
+        const siblings = this.parentElement.children;
+        for (let sib of siblings) {
+          sib.classList.remove('selected', 'correct', 'incorrect');
+          if(sib.tagName === 'BUTTON') sib.disabled = true;
         }
+
+        // Feedback immédiat
+        const isCorrect = index === correctAnswerIndex;
+        this.classList.add(isCorrect ? 'correct' : 'incorrect');
+        if(!isCorrect && siblings[correctAnswerIndex]) {
+          siblings[correctAnswerIndex].classList.add('correct');
+        }
+
+        // Auto-scroll après délai
+        setTimeout(() => {
+          if (currentIndex < videoCards.length - 1) {
+            scrollToCard(currentIndex + 1);
+          }
+        }, 1500);
       });
     });
 
-    // Validation du quiz
-    if (validateBtn) {
-      validateBtn.addEventListener('click', () => {
-        if (selectedOption === null) return;
-
-        // Désactiver toutes les options
-        quizOptions.forEach(opt => {
-          opt.style.pointerEvents = 'none';
-        });
-
-        // Vérifier la réponse
-        if (selectedOption === correctAnswerIndex) {
-          // Réponse correcte
-          quizOptions[selectedOption].classList.add('correct');
-
-          // Ajouter icône checkmark
-          const checkIcon = document.createElement('div');
-          checkIcon.className = 'absolute right-4 w-8 h-8 rounded-full bg-green-500 flex items-center justify-center';
-          checkIcon.innerHTML = '<svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
-          quizOptions[selectedOption].appendChild(checkIcon);
-
-          // Transition après 1.2s
-          setTimeout(() => {
-            // Scroll vers la prochaine action
-            if (currentIndex < videoCards.length - 1) {
-              currentIndex++;
-              videoCards[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-          }, 1200);
-        } else {
-          // Réponse incorrecte
-          quizOptions[selectedOption].classList.add('incorrect');
-
-          // Ajouter icône X
-          const xIcon = document.createElement('div');
-          xIcon.className = 'absolute right-4 w-8 h-8 rounded-full bg-red-500 flex items-center justify-center';
-          xIcon.innerHTML = '<svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
-          quizOptions[selectedOption].appendChild(xIcon);
-
-          // Révéler la bonne réponse
-          quizOptions[correctAnswerIndex].classList.add('correct');
-          const checkIcon = document.createElement('div');
-          checkIcon.className = 'absolute right-4 w-8 h-8 rounded-full bg-green-500 flex items-center justify-center';
-          checkIcon.innerHTML = '<svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
-          quizOptions[correctAnswerIndex].appendChild(checkIcon);
-
-          // Transition après 1.8s
-          setTimeout(() => {
-            if (currentIndex < videoCards.length - 1) {
-              currentIndex++;
-              videoCards[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-          }, 1800);
-        }
-      });
-    }
-
-    // ===== ACTION 3: IMAGE QUIZ =====
+    // --- IMAGE QUIZ LOGIC ---
     const quizOptionsImg = document.querySelectorAll('.quiz-option-img');
-    let selectedOptionImg = null;
-    const correctAnswerImg = 0; // La première option est la bonne
+    const correctAnswerImg = 0;
 
     quizOptionsImg.forEach((option, index) => {
-      option.addEventListener('click', () => {
-        // Retirer la sélection précédente
-        quizOptionsImg.forEach(opt => opt.classList.remove('selected'));
-
-        // Ajouter la sélection
-        option.classList.add('selected');
-        selectedOptionImg = index;
-
-        // Simuler la validation automatique après sélection
-        setTimeout(() => {
-          // Désactiver toutes les options
-          quizOptionsImg.forEach(opt => {
-            opt.style.pointerEvents = 'none';
-          });
-
-          if (selectedOptionImg === correctAnswerImg) {
-            // Réponse correcte
-            option.classList.add('correct');
-
-            // Ajouter icône checkmark
-            const checkIcon = document.createElement('div');
-            checkIcon.className = 'absolute right-4 w-8 h-8 rounded-full bg-green-500 flex items-center justify-center';
-            checkIcon.innerHTML = '<svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
-            option.appendChild(checkIcon);
-
-            // Transition après 1.2s
-            setTimeout(() => {
-              if (currentIndex < videoCards.length - 1) {
-                currentIndex++;
-                videoCards[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }
-            }, 1200);
-          } else {
-            // Réponse incorrecte
-            option.classList.add('incorrect');
-
-            // Ajouter icône X
-            const xIcon = document.createElement('div');
-            xIcon.className = 'absolute right-4 w-8 h-8 rounded-full bg-red-500 flex items-center justify-center';
-            xIcon.innerHTML = '<svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
-            option.appendChild(xIcon);
-
-            // Révéler la bonne réponse
-            quizOptionsImg[correctAnswerImg].classList.add('correct');
-            const checkIcon = document.createElement('div');
-            checkIcon.className = 'absolute right-4 w-8 h-8 rounded-full bg-green-500 flex items-center justify-center';
-            checkIcon.innerHTML = '<svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
-            quizOptionsImg[correctAnswerImg].appendChild(checkIcon);
-
-            // Transition après 1.8s
-            setTimeout(() => {
-              if (currentIndex < videoCards.length - 1) {
-                currentIndex++;
-                videoCards[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }
-            }, 1800);
+      option.addEventListener('click', function() {
+        // Reset frères
+        const siblings = this.parentElement.children;
+        for (let i = 0; i < siblings.length; i++) {
+          const sib = siblings[i];
+          if (sib.classList && sib.classList.contains('quiz-option-img')) {
+            sib.classList.remove('selected', 'correct', 'incorrect');
+            if(sib.tagName === 'BUTTON') sib.disabled = true;
           }
-        }, 300);
+        }
+
+        // Feedback immédiat
+        const isCorrect = index === correctAnswerImg;
+        this.classList.add(isCorrect ? 'correct' : 'incorrect');
+
+        if(!isCorrect) {
+          for (let i = 0; i < siblings.length; i++) {
+            if (siblings[i].classList && siblings[i].classList.contains('quiz-option-img') && i === correctAnswerImg) {
+              siblings[i].classList.add('correct');
+            }
+          }
+        }
+
+        // Auto-scroll après délai
+        setTimeout(() => {
+          if (currentIndex < videoCards.length - 1) {
+            scrollToCard(currentIndex + 1);
+          }
+        }, 1500);
       });
     });
 
-    // ===== ACTION 4: SPEAKING TASK =====
+    // --- SPEAKING TASK LOGIC ---
     const micBtn = document.getElementById('micBtn');
-    const recordTimer = document.getElementById('recordTimer');
-    const recordingLabel = document.getElementById('recordingLabel');
     const resultModal = document.getElementById('resultModal');
-    let isRecording = false;
-    let recordingTime = 0;
-    let timerInterval;
+    const micLabel = document.getElementById('micLabel');
+    const recordTimer = document.getElementById('recordTimer');
+    let recording = false;
+    let recordInterval;
 
-    if (micBtn) {
+    if(micBtn) {
       micBtn.addEventListener('click', () => {
-        if (!isRecording) {
-          // Démarrer l'enregistrement
-          isRecording = true;
-          micBtn.classList.add('recording');
-          recordTimer.classList.remove('hidden');
-          recordingLabel.classList.remove('hidden');
+        if(!recording) {
+          // Start recording simulation
+          recording = true;
+          micBtn.classList.add('recording', 'bg-red-500');
+          micBtn.classList.remove('bg-accent');
+          if(micLabel) micLabel.textContent = "Écoute en cours...";
+          if(recordTimer) recordTimer.classList.remove('hidden');
 
-          // Démarrer le timer
-          recordingTime = 0;
-          timerInterval = setInterval(() => {
-            recordingTime++;
-            const minutes = Math.floor(recordingTime / 60).toString().padStart(2, '0');
-            const seconds = (recordingTime % 60).toString().padStart(2, '0');
-            recordTimer.textContent = `${minutes}:${seconds}`;
-
-            // Changer la couleur selon le temps
-            if (recordingTime > 15) {
-              recordTimer.style.color = '#EF4444'; // Rouge
-            } else if (recordingTime > 10) {
-              recordTimer.style.color = '#FBBF24'; // Jaune
-            }
-
-            // Arrêt automatique à 20s
-            if (recordingTime >= 20) {
-              stopRecording();
-            }
+          let seconds = 0;
+          if(recordTimer) recordTimer.textContent = "00:00";
+          recordInterval = setInterval(() => {
+            seconds++;
+            if(recordTimer) recordTimer.textContent = `00:${seconds.toString().padStart(2, '0')}`;
+            if(seconds >= 3) finishRecording(); // Simulation courte de 3s
           }, 1000);
+
         } else {
-          // Arrêter l'enregistrement
-          stopRecording();
+          finishRecording();
         }
       });
     }
 
-    function stopRecording() {
-      isRecording = false;
-      micBtn.classList.remove('recording');
-      clearInterval(timerInterval);
+    function finishRecording() {
+      clearInterval(recordInterval);
+      recording = false;
+      if(micBtn) {
+        micBtn.classList.remove('recording', 'bg-red-500');
+        micBtn.classList.add('bg-accent');
+      }
+      if(micLabel) micLabel.textContent = "Analyse...";
 
-      // Masquer le timer
+      // Simule délai d'analyse réseau
       setTimeout(() => {
-        recordTimer.classList.add('hidden');
-        recordingLabel.classList.add('hidden');
-        recordTimer.style.color = 'white';
-
-        // Afficher le modal de résultat après analyse simulée (2s)
-        setTimeout(() => {
-          if (resultModal) {
-            resultModal.classList.remove('hidden');
-            const modalContent = resultModal.querySelector('div > div');
-            setTimeout(() => {
-              modalContent.style.transform = 'scale(1)';
-            }, 50);
-          }
-        }, 2000);
-      }, 500);
+        showModal();
+        if(micLabel) micLabel.textContent = "Appuyez pour parler";
+        if(recordTimer) recordTimer.classList.add('hidden');
+      }, 1500);
     }
 
-    // Boutons du modal de résultat speaking
+    function showModal() {
+      if(resultModal) {
+        resultModal.classList.remove('opacity-0', 'pointer-events-none');
+        resultModal.classList.add('opacity-100', 'pointer-events-auto');
+        // Animation d'entrée du contenu
+        const modalContent = resultModal.querySelector('.bg-white');
+        if(modalContent) {
+          modalContent.classList.remove('scale-90');
+          modalContent.classList.add('scale-100');
+        }
+      }
+    }
+
+    function hideModal() {
+      if(resultModal) {
+        // Animation de sortie
+        const modalContent = resultModal.querySelector('.bg-white');
+        if(modalContent) {
+          modalContent.classList.remove('scale-100');
+          modalContent.classList.add('scale-90');
+        }
+
+        setTimeout(() => {
+          resultModal.classList.remove('opacity-100', 'pointer-events-auto');
+          resultModal.classList.add('opacity-0', 'pointer-events-none');
+        }, 200);
+      }
+    }
+
+    // Écouteurs Modale Résultat
     const retryBtn = document.getElementById('retryBtn');
     const continueBtn = document.getElementById('continueBtn');
 
-    if (retryBtn) {
-      retryBtn.addEventListener('click', () => {
-        // Fermer le modal
-        if (resultModal) {
-          const modalContent = resultModal.querySelector('div > div');
-          modalContent.style.transform = 'scale(0)';
-          setTimeout(() => {
-            resultModal.classList.add('hidden');
-          }, 300);
-        }
-        // Réinitialiser le timer
-        recordingTime = 0;
-        recordTimer.textContent = '00:00';
-      });
-    }
-
-    if (continueBtn) {
-      continueBtn.addEventListener('click', () => {
-        // Fermer le modal et passer à la prochaine action
-        if (resultModal) {
-          const modalContent = resultModal.querySelector('div > div');
-          modalContent.style.transform = 'scale(0)';
-          setTimeout(() => {
-            resultModal.classList.add('hidden');
-            // Scroll vers la prochaine action si disponible
-            if (currentIndex < videoCards.length - 1) {
-              currentIndex++;
-              videoCards[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-          }, 300);
-        }
-      });
-    }
-
-    // Bouton replay vidéo dans video quiz
-    const replayVideoBtn = document.getElementById('replayVideoBtn');
-    if (replayVideoBtn) {
-      replayVideoBtn.addEventListener('click', () => {
-        const questionsOverlay = document.getElementById('questionsOverlay');
-        if (questionsOverlay) {
-          // Masquer l'overlay des questions
-          questionsOverlay.classList.add('opacity-0', 'pointer-events-none');
-          questionsOverlay.classList.remove('opacity-100');
-
-          // Réafficher après 3 secondes (simuler la vidéo)
-          setTimeout(() => {
-            questionsOverlay.classList.remove('opacity-0', 'pointer-events-none');
-            questionsOverlay.classList.add('opacity-100');
-          }, 3000);
-        }
-      });
-    }
+    if(retryBtn) retryBtn.addEventListener('click', hideModal);
+    if(continueBtn) continueBtn.addEventListener('click', () => {
+      hideModal();
+      setTimeout(() => {
+        // Boucle au début pour la démo, ou aller à une page suivante
+        scrollToCard(0);
+      }, 300);
+    });
   </script>
 </body>
 </html>
