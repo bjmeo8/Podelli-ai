@@ -232,7 +232,7 @@
     <!-- ===== ACTION 1: VIDEO QUIZ ===== -->
     <div class="video-card bg-gradient-to-br from-blue-600 to-blue-400">
       <!-- Video background -->
-      <video id="videoQuizPlayer" class="absolute inset-0 w-full h-full object-cover" playsinline>
+      <video id="videoQuizPlayer" class="absolute inset-0 w-full h-full object-cover" playsinline loop>
         <source src="Une_stewart_accueil_202511081924_uatiu.mp4" type="video/mp4">
       </video>
       <!-- Overlay sombre pour améliorer la lisibilité -->
@@ -591,6 +591,15 @@
         // Si autoplay échoue (policy du navigateur), on ne fait rien
         console.log('Autoplay prevented:', e);
       });
+
+      // Contrôle play/pause au clic sur la vidéo
+      videoQuizPlayer.addEventListener('click', function() {
+        if(this.paused) {
+          this.play();
+        } else {
+          this.pause();
+        }
+      });
     }
 
     function showQuestions() {
@@ -872,12 +881,10 @@
       translateBtn.addEventListener('click', function() {
         videoQuizTranslated = !videoQuizTranslated;
 
-        const questionEl = document.querySelector('#questionsOverlay h4');
         const optionEls = document.querySelectorAll('.quiz-option');
 
         if(videoQuizTranslated) {
-          // Translate to English
-          if(questionEl) questionEl.textContent = translations.videoQuiz.question;
+          // Translate options to English (question stays in user's language)
           optionEls.forEach((opt, i) => {
             if(translations.videoQuiz.options[i]) {
               opt.textContent = translations.videoQuiz.options[i];
@@ -885,7 +892,6 @@
           });
         } else {
           // Back to French
-          if(questionEl) questionEl.textContent = "Que dit l'agent ?";
           optionEls.forEach((opt, i) => {
             const frenchOptions = [
               "A) Bonjour monsieur, votre passeport s'il vous plaît.",
@@ -907,12 +913,10 @@
       translateQuizBtn.addEventListener('click', function() {
         quizTranslated = !quizTranslated;
 
-        const questionEl = document.querySelector('.video-card:nth-child(3) h3');
         const optionTextEls = document.querySelectorAll('.quiz-option-img span:last-child');
 
         if(quizTranslated) {
-          // Translate to English
-          if(questionEl) questionEl.textContent = translations.quiz.question;
+          // Translate options to English (question stays in user's language)
           optionTextEls.forEach((opt, i) => {
             if(translations.quiz.options[i]) {
               opt.textContent = translations.quiz.options[i];
@@ -920,7 +924,6 @@
           });
         } else {
           // Back to French
-          if(questionEl) questionEl.textContent = "Associez l'image au bon mot :";
           const frenchOptions = [
             "Un passeport",
             "Une carte d'embarquement",
