@@ -12,6 +12,9 @@
   <!-- TailwindCSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
   <!-- TailwindCSS Configuration -->
   <script>
     tailwind.config = {
@@ -228,15 +231,12 @@
 
     <!-- ===== ACTION 1: VIDEO QUIZ ===== -->
     <div class="video-card bg-gradient-to-br from-blue-600 to-blue-400">
-      <!-- Video background (placeholder avec image statique) -->
-      <div class="absolute inset-0 bg-cover bg-center" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800');">
-        <!-- Icône play centrale (avant démarrage) -->
-        <div id="playIcon" class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0">
-          <div class="w-20 h-20 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center border-3 border-white">
-            <svg class="h-10 w-10 text-white ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          </div>
-        </div>
-      </div>
+      <!-- Video background -->
+      <video id="videoQuizPlayer" class="absolute inset-0 w-full h-full object-cover" playsinline>
+        <source src="Une_stewart_accueil_202511081924_uatiu.mp4" type="video/mp4">
+      </video>
+      <!-- Overlay sombre pour améliorer la lisibilité -->
+      <div class="absolute inset-0 bg-black/20"></div>
 
       <!-- Header Overlay -->
       <div class="absolute top-0 left-0 right-0 gradient-overlay-top px-6 pt-[calc(73px+1rem)] pb-6 z-10">
@@ -248,9 +248,6 @@
 
       <!-- Footer Overlay -->
       <div class="absolute bottom-0 left-0 right-0 gradient-overlay-bottom px-6 pb-[calc(66px+1rem)] pt-6 z-10">
-        <div>
-          <h3 class="text-2xl font-bold text-white">Épisode 1 - Contrôle des passeports</h3>
-        </div>
       </div>
 
       <!-- Bouton Actions Vidéo (Toujours visible) -->
@@ -354,13 +351,19 @@
             <span class="text-sm text-accent font-mono mt-1">/seel voo pleh/</span>
           </div>
         </div>
+
+        <!-- Bouton de traduction -->
+        <div class="flex justify-center mt-6">
+          <button id="translateVoiceSpellBtn" class="w-12 h-12 rounded-full bg-accent hover:bg-accent/90 flex items-center justify-center text-white transition-all shadow-lg" title="Voir la traduction">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       <!-- Footer Overlay -->
       <div class="absolute bottom-0 left-0 right-0 px-6 pb-[calc(66px+1rem)] pt-6 z-10">
-        <div>
-          <h3 class="text-xl font-bold text-white drop-shadow-md">Découpage Phonétique</h3>
-        </div>
       </div>
     </div>
 
@@ -381,14 +384,15 @@
         </div>
       </div>
 
-      <!-- Conteneur principal avec scroll si nécessaire sur très petits écrans -->
-      <div class="absolute inset-0 flex flex-col px-6 pt-[110px] pb-[90px] z-20 overflow-y-auto scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
-        <h3 class="text-center text-white font-bold text-lg mb-6 drop-shadow-md flex-shrink-0">
+      <!-- Conteneur principal centré verticalement -->
+      <div class="absolute inset-0 flex flex-col items-center justify-center px-6 pt-[100px] pb-[90px] z-20">
+        <!-- Question (espacée des tags) -->
+        <h3 class="text-center text-white font-bold text-lg mb-12 drop-shadow-md">
           Associez l'image au bon mot :
         </h3>
 
-        <!-- Options (Flex grow pour occuper l'espace dispo, mais pas trop) -->
-        <div class="flex flex-col gap-3 w-full max-w-sm mx-auto">
+        <!-- Bloc des options centré -->
+        <div class="flex flex-col gap-3 w-full max-w-sm">
           <button class="quiz-option-img bg-white rounded-xl p-3 flex items-center gap-3 shadow-md active:scale-[0.98] transition-all">
             <span class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg text-gray-700 font-bold text-sm">A</span>
             <span class="text-gray-800 font-medium">Un passeport</span>
@@ -405,8 +409,15 @@
             <span class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-lg text-gray-700 font-bold text-sm">D</span>
             <span class="text-gray-800 font-medium">Une carte d'identité</span>
           </button>
-          <!-- Espace vide pour garantir que le dernier élément n'est pas caché par le footer sur petits écrans -->
-          <div class="h-4 flex-shrink-0"></div>
+
+          <!-- Bouton de traduction (caché par défaut, apparaît après réponse) -->
+          <div class="flex justify-center mt-4">
+            <button id="translateQuizBtn" class="hidden w-12 h-12 rounded-full bg-accent hover:bg-accent/90 flex items-center justify-center text-white transition-all shadow-lg" title="Voir la traduction">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -572,6 +583,15 @@
     const showQuestionsBtn = document.getElementById('showQuestionsBtn');
     const hideQuestionsBtn = document.getElementById('hideQuestionsBtn');
     const replayVideoBtn = document.getElementById('replayVideoBtn');
+    const videoQuizPlayer = document.getElementById('videoQuizPlayer');
+
+    // Auto-play la vidéo au chargement
+    if(videoQuizPlayer) {
+      videoQuizPlayer.play().catch(e => {
+        // Si autoplay échoue (policy du navigateur), on ne fait rien
+        console.log('Autoplay prevented:', e);
+      });
+    }
 
     function showQuestions() {
       questionsShown = true;
@@ -597,10 +617,11 @@
 
     if(replayVideoBtn) replayVideoBtn.addEventListener('click', () => {
       hideQuestions();
-      // Simule une relecture de 3s
-      setTimeout(() => {
-        // L'utilisateur doit cliquer sur "Je suis prêt" pour réafficher les questions
-      }, 3000);
+      // Rejouer la vidéo depuis le début
+      if(videoQuizPlayer) {
+        videoQuizPlayer.currentTime = 0;
+        videoQuizPlayer.play();
+      }
     });
 
     // Interaction Options Quiz (Video)
@@ -622,6 +643,11 @@
         this.classList.add(isCorrect ? 'correct' : 'incorrect');
         if(!isCorrect && siblings[correctAnswerIndex]) {
           siblings[correctAnswerIndex].classList.add('correct');
+        }
+
+        // Déclencher confettis si bonne réponse
+        if(isCorrect) {
+          triggerConfetti();
         }
 
         // Afficher l'icône de traduction après la réponse
@@ -664,6 +690,17 @@
               siblings[i].classList.add('correct');
             }
           }
+        }
+
+        // Déclencher confettis si bonne réponse
+        if(isCorrect) {
+          triggerConfetti();
+        }
+
+        // Afficher le bouton de traduction après la réponse
+        const translateQuizBtn = document.getElementById('translateQuizBtn');
+        if(translateQuizBtn) {
+          translateQuizBtn.classList.remove('hidden');
         }
 
         // Auto-scroll après délai
@@ -765,6 +802,181 @@
         scrollToCard(0);
       }, 300);
     });
+
+    // --- CONFETTI ANIMATION ---
+    function triggerConfetti() {
+      const duration = 2000;
+      const animationEnd = Date.now() + duration;
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 200 };
+
+      function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      const interval = setInterval(function() {
+        const timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+          return clearInterval(interval);
+        }
+
+        const particleCount = 50 * (timeLeft / duration);
+        confetti(Object.assign({}, defaults, {
+          particleCount,
+          origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+        }));
+        confetti(Object.assign({}, defaults, {
+          particleCount,
+          origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+        }));
+      }, 250);
+    }
+
+    // --- TRANSLATION LOGIC ---
+    const translations = {
+      videoQuiz: {
+        question: "What does the agent say?",
+        options: [
+          "A) Hello sir, your passport please.",
+          "B) Where are you going?",
+          "C) Do you like Paris?",
+          "D) Do you have anything to declare?"
+        ]
+      },
+      quiz: {
+        question: "Match the image to the correct word:",
+        options: [
+          "A passport",
+          "A boarding pass",
+          "A tourist visa",
+          "An ID card"
+        ]
+      },
+      voiceSpell: {
+        sentence: "Hello sir, your passport please.",
+        blocks: [
+          { word: "Hello", phonetic: "/heh-loh/" },
+          { word: "sir", phonetic: "/sur/" },
+          { word: "your passport", phonetic: "/yor pas-port/" },
+          { word: "please", phonetic: "/pleez/" }
+        ]
+      }
+    };
+
+    let videoQuizTranslated = false;
+    let quizTranslated = false;
+    let voiceSpellTranslated = false;
+
+    // Video Quiz Translation
+    if(translateBtn) {
+      translateBtn.addEventListener('click', function() {
+        videoQuizTranslated = !videoQuizTranslated;
+
+        const questionEl = document.querySelector('#questionsOverlay h4');
+        const optionEls = document.querySelectorAll('.quiz-option');
+
+        if(videoQuizTranslated) {
+          // Translate to English
+          if(questionEl) questionEl.textContent = translations.videoQuiz.question;
+          optionEls.forEach((opt, i) => {
+            if(translations.videoQuiz.options[i]) {
+              opt.textContent = translations.videoQuiz.options[i];
+            }
+          });
+        } else {
+          // Back to French
+          if(questionEl) questionEl.textContent = "Que dit l'agent ?";
+          optionEls.forEach((opt, i) => {
+            const frenchOptions = [
+              "A) Bonjour monsieur, votre passeport s'il vous plaît.",
+              "B) Où allez-vous ?",
+              "C) Vous aimez Paris ?",
+              "D) Avez-vous quelque chose à déclarer ?"
+            ];
+            if(frenchOptions[i]) {
+              opt.textContent = frenchOptions[i];
+            }
+          });
+        }
+      });
+    }
+
+    // Quiz Translation
+    const translateQuizBtn = document.getElementById('translateQuizBtn');
+    if(translateQuizBtn) {
+      translateQuizBtn.addEventListener('click', function() {
+        quizTranslated = !quizTranslated;
+
+        const questionEl = document.querySelector('.video-card:nth-child(3) h3');
+        const optionTextEls = document.querySelectorAll('.quiz-option-img span:last-child');
+
+        if(quizTranslated) {
+          // Translate to English
+          if(questionEl) questionEl.textContent = translations.quiz.question;
+          optionTextEls.forEach((opt, i) => {
+            if(translations.quiz.options[i]) {
+              opt.textContent = translations.quiz.options[i];
+            }
+          });
+        } else {
+          // Back to French
+          if(questionEl) questionEl.textContent = "Associez l'image au bon mot :";
+          const frenchOptions = [
+            "Un passeport",
+            "Une carte d'embarquement",
+            "Un visa touristique",
+            "Une carte d'identité"
+          ];
+          optionTextEls.forEach((opt, i) => {
+            if(frenchOptions[i]) {
+              opt.textContent = frenchOptions[i];
+            }
+          });
+        }
+      });
+    }
+
+    // Voice Spell Translation
+    const translateVoiceSpellBtn = document.getElementById('translateVoiceSpellBtn');
+    if(translateVoiceSpellBtn) {
+      translateVoiceSpellBtn.addEventListener('click', function() {
+        voiceSpellTranslated = !voiceSpellTranslated;
+
+        const sentenceEl = document.querySelector('.video-card:nth-child(2) .bg-black\\/40 p');
+        const wordEls = document.querySelectorAll('.video-card:nth-child(2) .bg-white\\/90 .text-base');
+        const phoneticEls = document.querySelectorAll('.video-card:nth-child(2) .bg-white\\/90 .font-mono');
+
+        if(voiceSpellTranslated) {
+          // Translate to English
+          if(sentenceEl) sentenceEl.textContent = '"' + translations.voiceSpell.sentence + '"';
+          wordEls.forEach((el, i) => {
+            if(translations.voiceSpell.blocks[i]) {
+              el.textContent = translations.voiceSpell.blocks[i].word;
+            }
+          });
+          phoneticEls.forEach((el, i) => {
+            if(translations.voiceSpell.blocks[i]) {
+              el.textContent = translations.voiceSpell.blocks[i].phonetic;
+            }
+          });
+        } else {
+          // Back to French
+          if(sentenceEl) sentenceEl.textContent = '"Bonjour monsieur, votre passeport s\'il vous plaît."';
+          const frenchWords = ["Bonjour", "monsieur", "votre passeport", "s'il vous plaît"];
+          const frenchPhonetics = ["/bohn-zhoor/", "/muh-syuh/", "/vo-truh pahs-por/", "/seel voo pleh/"];
+          wordEls.forEach((el, i) => {
+            if(frenchWords[i]) {
+              el.textContent = frenchWords[i];
+            }
+          });
+          phoneticEls.forEach((el, i) => {
+            if(frenchPhonetics[i]) {
+              el.textContent = frenchPhonetics[i];
+            }
+          });
+        }
+      });
+    }
   </script>
 </body>
 </html>
