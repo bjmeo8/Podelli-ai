@@ -260,27 +260,32 @@
 
       <!-- Questions Overlay (apparaît à la fin de la vidéo) -->
       <div id="questionsOverlay" class="absolute inset-0 bg-black/60 backdrop-blur-sm z-15 opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="absolute bottom-[160px] left-1/2 transform -translate-x-1/2 w-[calc(100%-48px)] max-w-[400px] bg-white/95 backdrop-blur-lg rounded-3xl p-6 shadow-2xl border border-white/20">
+        <!-- Bouton pour revoir la vidéo -->
+        <button id="replayVideoBtn" class="absolute top-[100px] right-6 w-12 h-12 rounded-full bg-white/90 backdrop-blur-sm border-2 border-white/50 flex items-center justify-center z-30 hover:bg-white transition-all hover:scale-110 shadow-lg">
+          <svg class="h-6 w-6 text-accent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+        </button>
+
+        <div class="absolute bottom-[160px] left-1/2 transform -translate-x-1/2 w-[calc(100%-48px)] max-w-[400px] bg-white/95 backdrop-blur-lg rounded-3xl p-5 shadow-2xl border border-white/20">
           <!-- Question -->
-          <h4 class="text-lg font-bold text-gray-800 text-center mb-5">Que dit l'agent ?</h4>
+          <h4 class="text-base font-bold text-gray-800 text-center mb-4">Que dit l'agent ?</h4>
 
           <!-- Options -->
-          <div class="flex flex-col gap-3">
-            <button class="quiz-option group bg-white border-2 border-gray-200 rounded-2xl p-4 text-left transition-all duration-200 hover:border-accent hover:-translate-y-0.5 hover:shadow-lg">
-              <span class="text-base font-medium text-gray-800">A) Bonjour monsieur, votre passeport s'il vous plaît.</span>
+          <div class="flex flex-col gap-2.5">
+            <button class="quiz-option group bg-white border-2 border-gray-200 rounded-xl p-3 text-left transition-all duration-200 hover:border-accent hover:-translate-y-0.5 hover:shadow-lg">
+              <span class="text-sm font-medium text-gray-800">A) Bonjour monsieur, votre passeport s'il vous plaît.</span>
             </button>
 
-            <button class="quiz-option group bg-white border-2 border-gray-200 rounded-2xl p-4 text-left transition-all duration-200 hover:border-accent hover:-translate-y-0.5 hover:shadow-lg">
-              <span class="text-base font-medium text-gray-800">B) Où allez-vous ?</span>
+            <button class="quiz-option group bg-white border-2 border-gray-200 rounded-xl p-3 text-left transition-all duration-200 hover:border-accent hover:-translate-y-0.5 hover:shadow-lg">
+              <span class="text-sm font-medium text-gray-800">B) Où allez-vous ?</span>
             </button>
 
-            <button class="quiz-option group bg-white border-2 border-gray-200 rounded-2xl p-4 text-left transition-all duration-200 hover:border-accent hover:-translate-y-0.5 hover:shadow-lg">
-              <span class="text-base font-medium text-gray-800">C) Vous aimez Paris ?</span>
+            <button class="quiz-option group bg-white border-2 border-gray-200 rounded-xl p-3 text-left transition-all duration-200 hover:border-accent hover:-translate-y-0.5 hover:shadow-lg">
+              <span class="text-sm font-medium text-gray-800">C) Vous aimez Paris ?</span>
             </button>
           </div>
 
           <!-- Bouton Valider -->
-          <button id="validateBtn" class="w-full h-13 bg-gray-300 rounded-full text-white font-bold text-base mt-5 transition-all duration-300 opacity-50 cursor-not-allowed" disabled>
+          <button id="validateBtn" class="w-full h-12 bg-gray-300 rounded-full text-white font-bold text-sm mt-4 transition-all duration-300 opacity-50 cursor-not-allowed" disabled>
             Valider
           </button>
         </div>
@@ -307,43 +312,43 @@
       </button>
 
       <!-- Caption synchronisée (milieu de l'écran) -->
-      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[calc(100%-64px)] max-w-[450px] z-20">
-        <div class="px-6 py-4 bg-black/85 backdrop-blur-md rounded-xl">
-          <p class="text-xl font-bold text-white text-center leading-relaxed tracking-wide" style="text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
+      <div class="absolute top-[35%] left-1/2 transform -translate-x-1/2 w-[calc(100%-64px)] max-w-[450px] z-20">
+        <div class="px-5 py-3 bg-black/85 backdrop-blur-md rounded-xl">
+          <p class="text-lg font-bold text-white text-center leading-relaxed tracking-wide" style="text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
             Bonjour monsieur, votre passeport s'il vous plaît.
           </p>
         </div>
       </div>
 
       <!-- Blocs phonétiques (après le milieu) -->
-      <div class="absolute top-[55%] left-0 right-0 px-6 z-20">
-        <div class="flex flex-wrap justify-center gap-3">
+      <div class="absolute top-[48%] left-0 right-0 px-4 z-20">
+        <div class="flex flex-wrap justify-center gap-2 max-w-md mx-auto">
           <!-- Bloc 1 -->
-          <div class="inline-flex flex-col bg-white/95 backdrop-blur-md border-2 border-white/50 rounded-2xl px-5 py-4 shadow-lg">
-            <span class="text-lg font-bold text-gray-800 text-center mb-2 tracking-wide">Bonjour</span>
-            <div class="h-0.5 bg-gradient-to-r from-transparent via-accent/50 to-transparent my-2"></div>
-            <span class="text-base text-accent text-center font-mono italic tracking-wider">/bohn-zhoor/</span>
+          <div class="inline-flex flex-col bg-white/95 backdrop-blur-md border-2 border-white/50 rounded-xl px-3 py-2.5 shadow-lg">
+            <span class="text-sm font-bold text-gray-800 text-center mb-1 tracking-wide">Bonjour</span>
+            <div class="h-0.5 bg-gradient-to-r from-transparent via-accent/50 to-transparent my-1"></div>
+            <span class="text-xs text-accent text-center font-mono italic tracking-wider">/bohn-zhoor/</span>
           </div>
 
           <!-- Bloc 2 -->
-          <div class="inline-flex flex-col bg-white/95 backdrop-blur-md border-2 border-white/50 rounded-2xl px-5 py-4 shadow-lg">
-            <span class="text-lg font-bold text-gray-800 text-center mb-2 tracking-wide">monsieur</span>
-            <div class="h-0.5 bg-gradient-to-r from-transparent via-accent/50 to-transparent my-2"></div>
-            <span class="text-base text-accent text-center font-mono italic tracking-wider">/muh-syuh/</span>
+          <div class="inline-flex flex-col bg-white/95 backdrop-blur-md border-2 border-white/50 rounded-xl px-3 py-2.5 shadow-lg">
+            <span class="text-sm font-bold text-gray-800 text-center mb-1 tracking-wide">monsieur</span>
+            <div class="h-0.5 bg-gradient-to-r from-transparent via-accent/50 to-transparent my-1"></div>
+            <span class="text-xs text-accent text-center font-mono italic tracking-wider">/muh-syuh/</span>
           </div>
 
           <!-- Bloc 3 -->
-          <div class="inline-flex flex-col bg-white/95 backdrop-blur-md border-2 border-white/50 rounded-2xl px-5 py-4 shadow-lg">
-            <span class="text-lg font-bold text-gray-800 text-center mb-2 tracking-wide">votre passeport</span>
-            <div class="h-0.5 bg-gradient-to-r from-transparent via-accent/50 to-transparent my-2"></div>
-            <span class="text-base text-accent text-center font-mono italic tracking-wider">/vo-truh pahs-por/</span>
+          <div class="inline-flex flex-col bg-white/95 backdrop-blur-md border-2 border-white/50 rounded-xl px-3 py-2.5 shadow-lg">
+            <span class="text-sm font-bold text-gray-800 text-center mb-1 tracking-wide">votre passeport</span>
+            <div class="h-0.5 bg-gradient-to-r from-transparent via-accent/50 to-transparent my-1"></div>
+            <span class="text-xs text-accent text-center font-mono italic tracking-wider">/vo-truh pahs-por/</span>
           </div>
 
           <!-- Bloc 4 -->
-          <div class="inline-flex flex-col bg-white/95 backdrop-blur-md border-2 border-white/50 rounded-2xl px-5 py-4 shadow-lg">
-            <span class="text-lg font-bold text-gray-800 text-center mb-2 tracking-wide">s'il vous plaît</span>
-            <div class="h-0.5 bg-gradient-to-r from-transparent via-accent/50 to-transparent my-2"></div>
-            <span class="text-base text-accent text-center font-mono italic tracking-wider">/seel voo pleh/</span>
+          <div class="inline-flex flex-col bg-white/95 backdrop-blur-md border-2 border-white/50 rounded-xl px-3 py-2.5 shadow-lg">
+            <span class="text-sm font-bold text-gray-800 text-center mb-1 tracking-wide">s'il vous plaît</span>
+            <div class="h-0.5 bg-gradient-to-r from-transparent via-accent/50 to-transparent my-1"></div>
+            <span class="text-xs text-accent text-center font-mono italic tracking-wider">/seel voo pleh/</span>
           </div>
         </div>
       </div>
@@ -369,41 +374,36 @@
       </div>
 
       <!-- Image centrale -->
-      <div class="absolute top-[100px] left-1/2 transform -translate-x-1/2 w-[calc(100%-64px)] max-w-[320px] aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl bg-white border-4 border-white animate-scale-in">
+      <div class="absolute top-[100px] left-1/2 transform -translate-x-1/2 w-[calc(100%-80px)] max-w-[280px] aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl bg-white border-4 border-white animate-scale-in">
         <img src="https://images.unsplash.com/photo-1578174959098-c36547a588ea?w=400" alt="Passport" class="w-full h-full object-cover">
       </div>
 
       <!-- Question -->
-      <div class="absolute top-[420px] left-0 right-0 px-8 text-center z-10">
-        <h3 class="text-xl font-bold text-white mb-7" style="text-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+      <div class="absolute top-[340px] left-0 right-0 px-8 text-center z-10">
+        <h3 class="text-base font-bold text-white mb-4" style="text-shadow: 0 2px 8px rgba(0,0,0,0.3);">
           Associe le mot "passeport" à l'image correcte
         </h3>
       </div>
 
       <!-- Options de réponse -->
-      <div class="absolute top-[480px] left-0 right-0 px-6 flex flex-col gap-3.5 z-10">
-        <button class="quiz-option-img bg-white/98 border-3 border-transparent rounded-2xl px-5 py-4.5 flex items-center gap-3.5 shadow-lg transition-all duration-250 hover:-translate-y-1 hover:shadow-xl hover:border-accent/30">
-          <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center font-bold text-lg text-gray-800 flex-shrink-0">A</div>
-          <span class="text-base font-medium text-gray-800 flex-1">🛂 Passeport (Document de voyage)</span>
+      <div class="absolute top-[405px] left-0 right-0 px-6 flex flex-col gap-2.5 z-10">
+        <button class="quiz-option-img bg-white/98 border-2 border-transparent rounded-xl px-4 py-3 flex items-center gap-3 shadow-lg transition-all duration-250 hover:-translate-y-1 hover:shadow-xl hover:border-accent/30">
+          <div class="w-7 h-7 bg-gray-100 rounded-lg flex items-center justify-center font-bold text-base text-gray-800 flex-shrink-0">A</div>
+          <span class="text-sm font-medium text-gray-800 flex-1">🛂 Passeport</span>
         </button>
 
-        <button class="quiz-option-img bg-white/98 border-3 border-transparent rounded-2xl px-5 py-4.5 flex items-center gap-3.5 shadow-lg transition-all duration-250 hover:-translate-y-1 hover:shadow-xl hover:border-accent/30">
-          <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center font-bold text-lg text-gray-800 flex-shrink-0">B</div>
-          <span class="text-base font-medium text-gray-800 flex-1">🎫 Billet d'avion</span>
+        <button class="quiz-option-img bg-white/98 border-2 border-transparent rounded-xl px-4 py-3 flex items-center gap-3 shadow-lg transition-all duration-250 hover:-translate-y-1 hover:shadow-xl hover:border-accent/30">
+          <div class="w-7 h-7 bg-gray-100 rounded-lg flex items-center justify-center font-bold text-base text-gray-800 flex-shrink-0">B</div>
+          <span class="text-sm font-medium text-gray-800 flex-1">🎫 Billet d'avion</span>
         </button>
 
-        <button class="quiz-option-img bg-white/98 border-3 border-transparent rounded-2xl px-5 py-4.5 flex items-center gap-3.5 shadow-lg transition-all duration-250 hover:-translate-y-1 hover:shadow-xl hover:border-accent/30">
-          <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center font-bold text-lg text-gray-800 flex-shrink-0">C</div>
-          <span class="text-base font-medium text-gray-800 flex-1">💼 Valise</span>
+        <button class="quiz-option-img bg-white/98 border-2 border-transparent rounded-xl px-4 py-3 flex items-center gap-3 shadow-lg transition-all duration-250 hover:-translate-y-1 hover:shadow-xl hover:border-accent/30">
+          <div class="w-7 h-7 bg-gray-100 rounded-lg flex items-center justify-center font-bold text-base text-gray-800 flex-shrink-0">C</div>
+          <span class="text-sm font-medium text-gray-800 flex-1">💼 Valise</span>
         </button>
       </div>
 
-      <!-- Bouton Valider -->
-      <div class="absolute bottom-[calc(66px+2rem)] left-1/2 transform -translate-x-1/2 w-[calc(100%-80px)] max-w-[280px] z-10">
-        <button class="w-full h-13 bg-gray-400 rounded-full text-white font-bold text-base shadow-lg transition-all duration-300 opacity-60 cursor-not-allowed" disabled>
-          Valider
-        </button>
-      </div>
+      <!-- Bouton Valider (supprimé car validation automatique) -->
 
       <!-- Footer Overlay -->
       <div class="absolute bottom-0 left-0 right-0 gradient-overlay-bottom px-6 pb-[calc(66px+1rem)] pt-6 z-10">
@@ -433,9 +433,9 @@
 
       <!-- Instruction -->
       <div class="absolute top-[190px] left-0 right-0 px-8 text-center z-10">
-        <p class="text-base font-semibold text-white/90 mb-4 uppercase tracking-wide">Répétez la phrase :</p>
-        <div class="inline-block px-8 py-5 bg-black/25 backdrop-blur-sm rounded-2xl border-2 border-white/20">
-          <p class="text-3xl font-bold text-white leading-snug tracking-wide" style="text-shadow: 0 3px 12px rgba(0,0,0,0.4);">
+        <p class="text-sm font-semibold text-white/90 mb-3 uppercase tracking-wide">Répétez la phrase :</p>
+        <div class="inline-block px-5 py-3 bg-black/25 backdrop-blur-sm rounded-xl border-2 border-white/20">
+          <p class="text-lg font-bold text-white leading-snug tracking-wide" style="text-shadow: 0 3px 12px rgba(0,0,0,0.4);">
             Bonjour monsieur, votre passeport s'il vous plaît
           </p>
         </div>
@@ -521,10 +521,10 @@
 
           <!-- Boutons d'action -->
           <div class="flex gap-3.5">
-            <button class="flex-1 h-13 bg-transparent border-2 border-gray-200 rounded-2xl text-base font-semibold text-gray-600 hover:bg-gray-50 transition-all">
+            <button id="retryBtn" class="flex-1 h-13 bg-transparent border-2 border-gray-200 rounded-2xl text-base font-semibold text-gray-600 hover:bg-gray-50 transition-all">
               Réessayer
             </button>
-            <button class="flex-1 h-13 bg-accent rounded-2xl text-base font-bold text-white shadow-lg hover:scale-105 transition-all">
+            <button id="continueBtn" class="flex-1 h-13 bg-accent rounded-2xl text-base font-bold text-white shadow-lg hover:scale-105 transition-all">
               Continuer ✓
             </button>
           </div>
@@ -811,6 +811,63 @@
           }
         }, 2000);
       }, 500);
+    }
+
+    // Boutons du modal de résultat speaking
+    const retryBtn = document.getElementById('retryBtn');
+    const continueBtn = document.getElementById('continueBtn');
+
+    if (retryBtn) {
+      retryBtn.addEventListener('click', () => {
+        // Fermer le modal
+        if (resultModal) {
+          const modalContent = resultModal.querySelector('div > div');
+          modalContent.style.transform = 'scale(0)';
+          setTimeout(() => {
+            resultModal.classList.add('hidden');
+          }, 300);
+        }
+        // Réinitialiser le timer
+        recordingTime = 0;
+        recordTimer.textContent = '00:00';
+      });
+    }
+
+    if (continueBtn) {
+      continueBtn.addEventListener('click', () => {
+        // Fermer le modal et passer à la prochaine action
+        if (resultModal) {
+          const modalContent = resultModal.querySelector('div > div');
+          modalContent.style.transform = 'scale(0)';
+          setTimeout(() => {
+            resultModal.classList.add('hidden');
+            // Scroll vers la prochaine action si disponible
+            if (currentIndex < videoCards.length - 1) {
+              currentIndex++;
+              videoCards[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }, 300);
+        }
+      });
+    }
+
+    // Bouton replay vidéo dans video quiz
+    const replayVideoBtn = document.getElementById('replayVideoBtn');
+    if (replayVideoBtn) {
+      replayVideoBtn.addEventListener('click', () => {
+        const questionsOverlay = document.getElementById('questionsOverlay');
+        if (questionsOverlay) {
+          // Masquer l'overlay des questions
+          questionsOverlay.classList.add('opacity-0', 'pointer-events-none');
+          questionsOverlay.classList.remove('opacity-100');
+
+          // Réafficher après 3 secondes (simuler la vidéo)
+          setTimeout(() => {
+            questionsOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            questionsOverlay.classList.add('opacity-100');
+          }, 3000);
+        }
+      });
     }
   </script>
 </body>
