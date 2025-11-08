@@ -232,14 +232,14 @@
     <!-- ===== ACTION 1: VIDEO QUIZ ===== -->
     <div class="video-card bg-gradient-to-br from-blue-600 to-blue-400">
       <!-- Video background -->
-      <video id="videoQuizPlayer" class="absolute inset-0 w-full h-full object-cover" playsinline loop>
+      <video id="videoQuizPlayer" class="absolute inset-0 w-full h-full object-cover" autoplay muted playsinline loop>
         <source src="Une_stewart_accueil_202511081924_uatiu.mp4" type="video/mp4">
       </video>
       <!-- Overlay sombre pour améliorer la lisibilité -->
-      <div class="absolute inset-0 bg-black/20"></div>
+      <div class="absolute inset-0 bg-black/20 pointer-events-none"></div>
 
       <!-- Header Overlay -->
-      <div class="absolute top-0 left-0 right-0 gradient-overlay-top px-6 pt-[calc(73px+1rem)] pb-6 z-10">
+      <div class="absolute top-0 left-0 right-0 gradient-overlay-top px-6 pt-[calc(73px+1rem)] pb-6 z-10 pointer-events-none">
         <div class="flex items-center justify-between">
           <span class="px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold text-white">Mission 1</span>
           <span class="px-3 py-1.5 bg-accent/80 backdrop-blur-sm rounded-full text-xs font-bold text-white">VIDEO QUIZ</span>
@@ -247,7 +247,7 @@
       </div>
 
       <!-- Footer Overlay -->
-      <div class="absolute bottom-0 left-0 right-0 gradient-overlay-bottom px-6 pb-[calc(66px+1rem)] pt-6 z-10">
+      <div class="absolute bottom-0 left-0 right-0 gradient-overlay-bottom px-6 pb-[calc(66px+1rem)] pt-6 z-10 pointer-events-none">
       </div>
 
       <!-- Bouton Actions Vidéo (Toujours visible) -->
@@ -585,20 +585,23 @@
     const replayVideoBtn = document.getElementById('replayVideoBtn');
     const videoQuizPlayer = document.getElementById('videoQuizPlayer');
 
-    // Auto-play la vidéo au chargement
+    // Contrôle play/pause au clic sur la vidéo
     if(videoQuizPlayer) {
-      videoQuizPlayer.play().catch(e => {
-        // Si autoplay échoue (policy du navigateur), on ne fait rien
-        console.log('Autoplay prevented:', e);
-      });
+      // Rendre la vidéo interactive
+      videoQuizPlayer.style.cursor = 'pointer';
 
-      // Contrôle play/pause au clic sur la vidéo
-      videoQuizPlayer.addEventListener('click', function() {
+      videoQuizPlayer.addEventListener('click', function(e) {
+        e.stopPropagation(); // Empêcher la propagation
         if(this.paused) {
-          this.play();
+          this.play().catch(err => console.log('Play error:', err));
         } else {
           this.pause();
         }
+      });
+
+      // Fallback: forcer le play si l'autoplay HTML ne fonctionne pas
+      videoQuizPlayer.play().catch(e => {
+        console.log('Autoplay prevented, will play on user interaction:', e);
       });
     }
 
