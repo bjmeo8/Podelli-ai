@@ -116,6 +116,59 @@
       padding: 1rem;
     }
 
+    /* Mobile Responsive Fixes */
+    @media (max-width: 640px) {
+      .mission-card-content {
+        padding: 0.75rem;
+      }
+
+      .mission-badge {
+        font-size: 0.65rem !important;
+        padding: 0.25rem 0.5rem !important;
+        white-space: nowrap;
+      }
+
+      .mission-episodes {
+        font-size: 0.65rem !important;
+        padding: 0.25rem 0.5rem !important;
+        white-space: nowrap;
+      }
+
+      .mission-title {
+        font-size: 0.875rem !important;
+        line-height: 1.2 !important;
+      }
+
+      .mission-description {
+        font-size: 0.65rem !important;
+        line-height: 1.3 !important;
+      }
+
+      .stat-card {
+        padding: 0.875rem !important;
+      }
+
+      .stat-icon-wrapper {
+        width: 2rem !important;
+        height: 2rem !important;
+      }
+
+      .stat-icon {
+        width: 1rem !important;
+        height: 1rem !important;
+      }
+
+      .stat-value {
+        font-size: 1.5rem !important;
+        margin-bottom: 0.25rem !important;
+      }
+
+      .stat-label {
+        font-size: 0.7rem !important;
+        line-height: 1.2 !important;
+      }
+    }
+
     .mission-card:hover {
       box-shadow: 0 20px 40px -16px rgba(0, 0, 0, 0.25);
     }
@@ -190,45 +243,45 @@
             <!-- Stat 1: Missions effectuées -->
             <div class="stat-card p-5 rounded-3xl border-2 shadow-soft">
               <div class="flex items-center gap-3 mb-2">
-                <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
-                  <svg class="h-5 w-5 text-accent" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" x2="12" y1="22.08" y2="12"/></svg>
+                <div class="stat-icon-wrapper w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center">
+                  <svg class="stat-icon h-5 w-5 text-accent" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" x2="12" y1="22.08" y2="12"/></svg>
                 </div>
               </div>
-              <div class="text-3xl font-bold mb-1" id="missionsCompleted">6</div>
-              <div class="text-sm text-muted-foreground">Missions effectuées</div>
+              <div class="stat-value text-3xl font-bold mb-1" id="missionsCompleted">6</div>
+              <div class="stat-label text-sm text-muted-foreground">Missions effectuées</div>
             </div>
 
             <!-- Stat 2: Missions réussies -->
             <div class="stat-card p-5 rounded-3xl border-2 shadow-soft">
               <div class="flex items-center gap-3 mb-2">
-                <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
-                  <svg class="h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <div class="stat-icon-wrapper w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
+                  <svg class="stat-icon h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                 </div>
               </div>
-              <div class="text-3xl font-bold mb-1" id="missionsSucceeded">6</div>
-              <div class="text-sm text-muted-foreground">Missions réussies</div>
+              <div class="stat-value text-3xl font-bold mb-1" id="missionsSucceeded">6</div>
+              <div class="stat-label text-sm text-muted-foreground">Missions réussies</div>
             </div>
 
             <!-- Stat 3: Taux de réussite -->
             <div class="stat-card p-5 rounded-3xl border-2 shadow-soft">
               <div class="flex items-center gap-3 mb-2">
-                <div class="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center">
-                  <svg class="h-5 w-5 text-amber-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                <div class="stat-icon-wrapper w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center">
+                  <svg class="stat-icon h-5 w-5 text-amber-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
                 </div>
               </div>
-              <div class="text-3xl font-bold mb-1" id="successRate">100%</div>
-              <div class="text-sm text-muted-foreground">Taux de réussite</div>
+              <div class="stat-value text-3xl font-bold mb-1" id="successRate">100%</div>
+              <div class="stat-label text-sm text-muted-foreground">Taux de réussite</div>
             </div>
 
             <!-- Stat 4: Total épisodes -->
             <div class="stat-card p-5 rounded-3xl border-2 shadow-soft">
               <div class="flex items-center gap-3 mb-2">
-                <div class="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center">
-                  <svg class="h-5 w-5 text-purple-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <div class="stat-icon-wrapper w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center">
+                  <svg class="stat-icon h-5 w-5 text-purple-500" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                 </div>
               </div>
-              <div class="text-3xl font-bold mb-1" id="totalEpisodes">48</div>
-              <div class="text-sm text-muted-foreground">Épisodes complétés</div>
+              <div class="stat-value text-3xl font-bold mb-1" id="totalEpisodes">48</div>
+              <div class="stat-label text-sm text-muted-foreground">Épisodes complétés</div>
             </div>
           </div>
         </div>
@@ -241,17 +294,17 @@
             <div class="mission-card rounded-3xl border-2 shadow-medium transition-smooth animate-scale-in" style="animation-delay: 0ms" onclick="playMission(1)">
               <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80" alt="Aéroport">
               <div class="mission-card-content">
-                <div class="flex items-start justify-between">
-                  <span class="text-xs font-bold px-3 py-1.5 bg-white/90 text-foreground rounded-full shadow-sm">
+                <div class="flex items-start justify-between gap-1">
+                  <span class="mission-badge text-xs font-bold px-3 py-1.5 bg-white/90 text-foreground rounded-full shadow-sm">
                     Mission 1
                   </span>
-                  <span class="text-xs font-semibold px-3 py-1.5 bg-accent/90 text-accent-foreground rounded-full shadow-sm">
-                    10 épisodes
+                  <span class="mission-episodes text-xs font-semibold px-3 py-1.5 bg-accent/90 text-accent-foreground rounded-full shadow-sm">
+                    10 ép.
                   </span>
                 </div>
                 <div class="text-white">
-                  <h4 class="font-bold text-base mb-1 drop-shadow-lg">Voyage à l'Aéroport</h4>
-                  <p class="text-xs opacity-90 drop-shadow-md">Maîtrisez les conversations essentielles pour voyager</p>
+                  <h4 class="mission-title font-bold text-base mb-1 drop-shadow-lg">Voyage à l'Aéroport</h4>
+                  <p class="mission-description text-xs opacity-90 drop-shadow-md">Maîtrisez les conversations essentielles pour voyager</p>
                 </div>
               </div>
             </div>
@@ -260,17 +313,17 @@
             <div class="mission-card rounded-3xl border-2 shadow-medium transition-smooth animate-scale-in" style="animation-delay: 100ms" onclick="playMission(2)">
               <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80" alt="Restaurant">
               <div class="mission-card-content">
-                <div class="flex items-start justify-between">
-                  <span class="text-xs font-bold px-3 py-1.5 bg-white/90 text-foreground rounded-full shadow-sm">
+                <div class="flex items-start justify-between gap-1">
+                  <span class="mission-badge text-xs font-bold px-3 py-1.5 bg-white/90 text-foreground rounded-full shadow-sm">
                     Mission 2
                   </span>
-                  <span class="text-xs font-semibold px-3 py-1.5 bg-accent/90 text-accent-foreground rounded-full shadow-sm">
-                    8 épisodes
+                  <span class="mission-episodes text-xs font-semibold px-3 py-1.5 bg-accent/90 text-accent-foreground rounded-full shadow-sm">
+                    8 ép.
                   </span>
                 </div>
                 <div class="text-white">
-                  <h4 class="font-bold text-base mb-1 drop-shadow-lg">Au Restaurant</h4>
-                  <p class="text-xs opacity-90 drop-shadow-md">Commander, payer et discuter avec le serveur</p>
+                  <h4 class="mission-title font-bold text-base mb-1 drop-shadow-lg">Au Restaurant</h4>
+                  <p class="mission-description text-xs opacity-90 drop-shadow-md">Commander, payer et discuter avec le serveur</p>
                 </div>
               </div>
             </div>
@@ -279,17 +332,17 @@
             <div class="mission-card rounded-3xl border-2 shadow-medium transition-smooth animate-scale-in" style="animation-delay: 200ms" onclick="playMission(3)">
               <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80" alt="Shopping">
               <div class="mission-card-content">
-                <div class="flex items-start justify-between">
-                  <span class="text-xs font-bold px-3 py-1.5 bg-white/90 text-foreground rounded-full shadow-sm">
+                <div class="flex items-start justify-between gap-1">
+                  <span class="mission-badge text-xs font-bold px-3 py-1.5 bg-white/90 text-foreground rounded-full shadow-sm">
                     Mission 3
                   </span>
-                  <span class="text-xs font-semibold px-3 py-1.5 bg-accent/90 text-accent-foreground rounded-full shadow-sm">
-                    7 épisodes
+                  <span class="mission-episodes text-xs font-semibold px-3 py-1.5 bg-accent/90 text-accent-foreground rounded-full shadow-sm">
+                    7 ép.
                   </span>
                 </div>
                 <div class="text-white">
-                  <h4 class="font-bold text-base mb-1 drop-shadow-lg">Shopping en Ville</h4>
-                  <p class="text-xs opacity-90 drop-shadow-md">Demander des prix et acheter en toute confiance</p>
+                  <h4 class="mission-title font-bold text-base mb-1 drop-shadow-lg">Shopping en Ville</h4>
+                  <p class="mission-description text-xs opacity-90 drop-shadow-md">Demander des prix et acheter en toute confiance</p>
                 </div>
               </div>
             </div>
@@ -298,17 +351,17 @@
             <div class="mission-card rounded-3xl border-2 shadow-medium transition-smooth animate-scale-in" style="animation-delay: 300ms" onclick="playMission(4)">
               <img src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=800&q=80" alt="Médecin">
               <div class="mission-card-content">
-                <div class="flex items-start justify-between">
-                  <span class="text-xs font-bold px-3 py-1.5 bg-white/90 text-foreground rounded-full shadow-sm">
+                <div class="flex items-start justify-between gap-1">
+                  <span class="mission-badge text-xs font-bold px-3 py-1.5 bg-white/90 text-foreground rounded-full shadow-sm">
                     Mission 4
                   </span>
-                  <span class="text-xs font-semibold px-3 py-1.5 bg-accent/90 text-accent-foreground rounded-full shadow-sm">
-                    6 épisodes
+                  <span class="mission-episodes text-xs font-semibold px-3 py-1.5 bg-accent/90 text-accent-foreground rounded-full shadow-sm">
+                    6 ép.
                   </span>
                 </div>
                 <div class="text-white">
-                  <h4 class="font-bold text-base mb-1 drop-shadow-lg">Premiers Secours</h4>
-                  <p class="text-xs opacity-90 drop-shadow-md">Décrire vos symptômes et obtenir de l'aide</p>
+                  <h4 class="mission-title font-bold text-base mb-1 drop-shadow-lg">Premiers Secours</h4>
+                  <p class="mission-description text-xs opacity-90 drop-shadow-md">Décrire vos symptômes et obtenir de l'aide</p>
                 </div>
               </div>
             </div>
@@ -317,17 +370,17 @@
             <div class="mission-card rounded-3xl border-2 shadow-medium transition-smooth animate-scale-in" style="animation-delay: 400ms" onclick="playMission(5)">
               <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80" alt="Hôtel">
               <div class="mission-card-content">
-                <div class="flex items-start justify-between">
-                  <span class="text-xs font-bold px-3 py-1.5 bg-white/90 text-foreground rounded-full shadow-sm">
+                <div class="flex items-start justify-between gap-1">
+                  <span class="mission-badge text-xs font-bold px-3 py-1.5 bg-white/90 text-foreground rounded-full shadow-sm">
                     Mission 5
                   </span>
-                  <span class="text-xs font-semibold px-3 py-1.5 bg-accent/90 text-accent-foreground rounded-full shadow-sm">
-                    9 épisodes
+                  <span class="mission-episodes text-xs font-semibold px-3 py-1.5 bg-accent/90 text-accent-foreground rounded-full shadow-sm">
+                    9 ép.
                   </span>
                 </div>
                 <div class="text-white">
-                  <h4 class="font-bold text-base mb-1 drop-shadow-lg">Réserver un Hôtel</h4>
-                  <p class="text-xs opacity-90 drop-shadow-md">Check-in, demandes spéciales et réclamations</p>
+                  <h4 class="mission-title font-bold text-base mb-1 drop-shadow-lg">Réserver un Hôtel</h4>
+                  <p class="mission-description text-xs opacity-90 drop-shadow-md">Check-in, demandes spéciales et réclamations</p>
                 </div>
               </div>
             </div>
@@ -336,17 +389,17 @@
             <div class="mission-card rounded-3xl border-2 shadow-medium transition-smooth animate-scale-in" style="animation-delay: 500ms" onclick="playMission(6)">
               <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=800&q=80" alt="Train">
               <div class="mission-card-content">
-                <div class="flex items-start justify-between">
-                  <span class="text-xs font-bold px-3 py-1.5 bg-white/90 text-foreground rounded-full shadow-sm">
+                <div class="flex items-start justify-between gap-1">
+                  <span class="mission-badge text-xs font-bold px-3 py-1.5 bg-white/90 text-foreground rounded-full shadow-sm">
                     Mission 6
                   </span>
-                  <span class="text-xs font-semibold px-3 py-1.5 bg-accent/90 text-accent-foreground rounded-full shadow-sm">
-                    8 épisodes
+                  <span class="mission-episodes text-xs font-semibold px-3 py-1.5 bg-accent/90 text-accent-foreground rounded-full shadow-sm">
+                    8 ép.
                   </span>
                 </div>
                 <div class="text-white">
-                  <h4 class="font-bold text-base mb-1 drop-shadow-lg">Transports Publics</h4>
-                  <p class="text-xs opacity-90 drop-shadow-md">Acheter des billets et demander votre chemin</p>
+                  <h4 class="mission-title font-bold text-base mb-1 drop-shadow-lg">Transports Publics</h4>
+                  <p class="mission-description text-xs opacity-90 drop-shadow-md">Acheter des billets et demander votre chemin</p>
                 </div>
               </div>
             </div>
